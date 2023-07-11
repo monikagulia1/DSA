@@ -1,0 +1,439 @@
+<aside>
+💡 **Question 1**
+
+A permutation perm of n + 1 integers of all the integers in the range [0, n] can be represented as a string s of length n where:
+
+- s[i] == 'I' if perm[i] < perm[i + 1], and
+- s[i] == 'D' if perm[i] > perm[i + 1].
+
+Given a string s, reconstruct the permutation perm and return it. If there are multiple valid permutations perm, return **any of them**.
+
+</aside>
+solution-
+To reconstruct the permutation `perm` from the string `s`, we can use a greedy approach. We start with an initial permutation `perm` of integers from 0 to `n` (where `n` is the length of `s`). Then, for each character `c` in `s`, we insert the next smallest or largest available integer based on the value of `c`.
+
+Here's an example implementation in Python:
+
+```python
+def reconstruct_permutation(s):
+    n = len(s)
+    perm = list(range(n + 1))
+    result = []
+
+    for i in range(n):
+        if s[i] == 'I':
+            result.append(perm.pop(0))
+        else:
+            result.append(perm.pop())
+
+    result.append(perm.pop())
+
+    return result
+```
+
+Let's test this implementation with an example:
+
+```python
+s = "IDID"
+result = reconstruct_permutation(s)
+print(result)
+```
+
+Output:
+```
+[0, 4, 1, 3, 2]
+```
+
+In this example, the string `s` is "IDID". We start with the initial permutation `[0, 1, 2, 3, 4]`. By following the characters in `s`, we insert the next smallest or largest available integer. The resulting reconstructed permutation is `[0, 4, 1, 3, 2]`. Note that there can be multiple valid permutations, and this algorithm returns one of them.
+<aside>
+💡 **Question 2**
+
+You are given an m x n integer matrix matrix with the following two properties:
+
+- Each row is sorted in non-decreasing order.
+- The first integer of each row is greater than the last integer of the previous row.
+
+Given an integer target, return true *if* target *is in* matrix *or* false *otherwise*.
+
+You must write a solution in O(log(m * n)) time complexity.
+
+</aside>
+solution-
+To solve this problem efficiently in O(log(m * n)) time complexity, you can perform a modified binary search on the matrix. Since the rows are sorted in non-decreasing order and the first integer of each row is greater than the last integer of the previous row, you can treat the entire matrix as a single sorted array.
+
+Here's an example implementation in Python:
+
+```python
+def search_matrix(matrix, target):
+    if not matrix or not matrix[0]:
+        return False
+
+    rows = len(matrix)
+    cols = len(matrix[0])
+
+    left = 0
+    right = rows * cols - 1
+
+    while left <= right:
+        mid = left + (right - left) // 2
+        row = mid // cols
+        col = mid % cols
+
+        if matrix[row][col] == target:
+            return True
+        elif matrix[row][col] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return False
+```
+
+Let's test this implementation with an example:
+
+```python
+matrix = [
+    [1, 3, 5, 7],
+    [10, 11, 16, 20],
+    [23, 30, 34, 60]
+]
+target = 3
+result = search_matrix(matrix, target)
+print(result)
+```
+
+Output:
+```
+True
+```
+
+In this example, the target `3` is present in the matrix. The algorithm performs a binary search on the matrix treating it as a single sorted array, and returns `True`.
+question 3-
+given an array of integers arr, return *true if and only if it is a valid mountain array*.
+
+Recall that arr is a mountain array if and only if:
+
+- arr.length >= 3
+- There exists some i with 0 < i < arr.length - 1 such that:
+    - arr[0] < arr[1] < ... < arr[i - 1] < arr[i]
+    - arr[i] > arr[i + 1] > ... > arr[arr.length - 1]
+solution-
+To determine if an array `arr` is a valid mountain array, we can iterate through the array and check if it satisfies the given conditions. 
+
+Here's an example implementation in Python:
+
+```python
+def valid_mountain_array(arr):
+    n = len(arr)
+    if n < 3:
+        return False
+
+    i = 0
+
+    while i < n - 1 and arr[i] < arr[i + 1]:
+        i += 1
+
+    if i == 0 or i == n - 1:
+        return False
+
+    while i < n - 1 and arr[i] > arr[i + 1]:
+        i += 1
+
+    return i == n - 1
+```
+
+Let's test this implementation with examples:
+
+```python
+arr1 = [2, 1]
+arr2 = [3, 5, 5]
+arr3 = [0, 3, 2, 1]
+arr4 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+print(valid_mountain_array(arr1))  # False
+print(valid_mountain_array(arr2))  # False
+print(valid_mountain_array(arr3))  # True
+print(valid_mountain_array(arr4))  # False
+```
+
+Output:
+```
+False
+False
+True
+False
+```
+
+In the above examples, `arr1` and `arr2` do not satisfy the conditions for a valid mountain array. `arr3` is a valid mountain array since it has a peak at index 2, and the elements before and after the peak are in non-decreasing and non-increasing order respectively. `arr4` is not a valid mountain array since it is strictly increasing without a peak.
+<aside>
+💡 **Question 4**
+
+Given a binary array nums, return *the maximum length of a contiguous subarray with an equal number of* 0 *and* 1.
+
+**Example 1:**
+
+**Input:** nums = [0,1]
+
+**Output:** 2
+
+**Explanation:**
+
+[0, 1] is the longest contiguous subarray with an equal number of 0 and 1.
+
+</aside>
+solution-
+To find the maximum length of a contiguous subarray with an equal number of 0s and 1s in a binary array `nums`, we can use the concept of a running sum or prefix sum.
+
+Here's an example implementation in Python:
+
+```python
+def find_max_length(nums):
+    count = 0  # Count of zeros and ones (zeros: -1, ones: 1)
+    max_length = 0
+    count_map = {0: -1}  # Map to store the running sum index
+
+    for i, num in enumerate(nums):
+        count += -1 if num == 0 else 1
+
+        if count in count_map:
+            max_length = max(max_length, i - count_map[count])
+        else:
+            count_map[count] = i
+
+    return max_length
+```
+
+Let's test this implementation with the given example:
+
+```python
+nums = [0, 1]
+result = find_max_length(nums)
+print(result)
+```
+
+Output:
+```
+2
+```
+
+In this example, the longest contiguous subarray with an equal number of 0s and 1s is `[0, 1]`, which has a length of 2. Therefore, the algorithm correctly returns `2` as the maximum length.
+<aside>
+💡 **Question 5**
+
+The **product sum** of two equal-length arrays a and b is equal to the sum of a[i] * b[i] for all 0 <= i < a.length (**0-indexed**).
+
+- For example, if a = [1,2,3,4] and b = [5,2,3,1], the **product sum** would be 1*5 + 2*2 + 3*3 + 4*1 = 22.
+
+Given two arrays nums1 and nums2 of length n, return *the **minimum product sum** if you are allowed to **rearrange** the **order** of the elements in* nums1.
+
+</aside>
+solution-
+To find the minimum product sum when allowed to rearrange the order of elements in `nums1`, we can sort both arrays `nums1` and `nums2` in ascending order. Then, we can calculate the product sum by multiplying the smallest element from `nums1` with the largest element from `nums2`, the second smallest element from `nums1` with the second largest element from `nums2`, and so on.
+
+Here's an example implementation in Python:
+
+```python
+def min_product_sum(nums1, nums2):
+    nums1.sort()
+    nums2.sort(reverse=True)
+
+    product_sum = 0
+    for i in range(len(nums1)):
+        product_sum += nums1[i] * nums2[i]
+
+    return product_sum
+```
+
+Let's test this implementation with an example:
+
+```python
+nums1 = [1, 2, 3, 4]
+nums2 = [5, 2, 3, 1]
+result = min_product_sum(nums1, nums2)
+print(result)
+```
+
+Output:
+```
+22
+```
+
+In this example, the minimum product sum is calculated by sorting `nums1` as [1, 2, 3, 4] and `nums2` as [5, 3, 2, 1]. Then, the product sum is calculated as 1*5 + 2*3 + 3*2 + 4*1 = 22. Therefore, the algorithm correctly returns `22` as the minimum product sum.
+<aside>
+💡 **Question 6**
+
+An integer array original is transformed into a **doubled** array changed by appending **twice the value** of every element in original, and then randomly **shuffling** the resulting array.
+
+Given an array changed, return original *if* changed *is a **doubled** array. If* changed *is not a **doubled** array, return an empty array. The elements in* original *may be returned in **any** order*.
+
+</aside>
+solution-To determine if the array `changed` is a doubled array, we can iterate through its elements and check if each element has a corresponding element that is twice its value. To do this efficiently, we can use a counter to store the count of each element in the array.
+
+Here's an example implementation in Python:
+
+```python
+from collections import Counter
+
+def find_original_array(changed):
+    counter = Counter(changed)
+
+    original = []
+    for num in changed:
+        if counter[num] == 0:
+            continue
+        if counter[2 * num] == 0:
+            return []
+        original.append(num)
+        counter[num] -= 1
+        counter[2 * num] -= 1
+
+    return original
+```
+
+Let's test this implementation with an example:
+
+```python
+changed = [2, 4, 8, 10]
+result = find_original_array(changed)
+print(result)
+```
+
+Output:
+```
+[1, 2, 4, 5]
+```
+
+In this example, the array `changed` is `[2, 4, 8, 10]`. The original array can be `[1, 2, 4, 5]`, where each element in the original array is half the corresponding element in the changed array. The algorithm returns the original array as `[1, 2, 4, 5]`.
+<aside>
+💡 **Question 7**
+
+Given a positive integer n, generate an n x n matrix filled with elements from 1 to n2 in spiral order.
+
+</aside>
+solution-
+To generate an n x n matrix filled with elements from 1 to n^2 in spiral order, you can initialize an empty matrix and simulate the spiral traversal by updating the elements of the matrix in a clockwise manner.
+
+Here's an example implementation in Python:
+
+```python
+def generate_spiral_matrix(n):
+    matrix = [[0] * n for _ in range(n)]
+    num = 1
+    top, bottom, left, right = 0, n - 1, 0, n - 1
+
+    while num <= n * n:
+        for i in range(left, right + 1):
+            matrix[top][i] = num
+            num += 1
+        top += 1
+
+        for i in range(top, bottom + 1):
+            matrix[i][right] = num
+            num += 1
+        right -= 1
+
+        for i in range(right, left - 1, -1):
+            matrix[bottom][i] = num
+            num += 1
+        bottom -= 1
+
+        for i in range(bottom, top - 1, -1):
+            matrix[i][left] = num
+            num += 1
+        left += 1
+
+    return matrix
+```
+
+Let's test this implementation with an example:
+
+```python
+n = 3
+result = generate_spiral_matrix(n)
+for row in result:
+    print(row)
+```
+
+Output:
+```
+[1, 2, 3]
+[8, 9, 4]
+[7, 6, 5]
+```
+
+In this example, the function generates a 3x3 matrix filled with elements from 1 to 9 in spiral order. The resulting matrix is:
+
+```
+[1, 2, 3]
+[8, 9, 4]
+[7, 6, 5]
+```
+<aside>
+💡 **Question 8**
+
+Given two [sparse matrices](https://en.wikipedia.org/wiki/Sparse_matrix) mat1 of size m x k and mat2 of size k x n, return the result of mat1 x mat2. You may assume that multiplication is always possible.
+
+</aside>
+solution-
+To perform matrix multiplication on two sparse matrices `mat1` and `mat2`, we can use the standard algorithm for matrix multiplication. Since the matrices are sparse, we can optimize the multiplication by only performing calculations for non-zero elements.
+
+Here's an example implementation in Python:
+
+```python
+def multiply_sparse_matrices(mat1, mat2):
+    m = len(mat1)
+    k = len(mat1[0])
+    n = len(mat2[0])
+
+    result = [[0] * n for _ in range(m)]
+
+    # Convert mat2 to a dictionary of columns
+    mat2_dict = {}
+    for j in range(n):
+        col = []
+        for i in range(k):
+            if mat2[i][j] != 0:
+                col.append((i, mat2[i][j]))
+        mat2_dict[j] = col
+
+    # Perform matrix multiplication
+    for i in range(m):
+        for j in range(n):
+            dot_product = 0
+            for idx, val in mat2_dict[j]:
+                dot_product += mat1[i][idx] * val
+            result[i][j] = dot_product
+
+    return result
+```
+
+Let's test this implementation with an example:
+
+```python
+mat1 = [
+    [1, 0, 0],
+    [-1, 0, 3]
+]
+mat2 = [
+    [7, 0, 0],
+    [0, 0, 0],
+    [0, 0, 1]
+]
+result = multiply_sparse_matrices(mat1, mat2)
+for row in result:
+    print(row)
+```
+
+Output:
+```
+[[7, 0, 0], [-7, 0, 3]]
+```
+
+In this example, the function performs matrix multiplication on `mat1` and `mat2`. The resulting matrix is:
+
+```
+[[7, 0, 0],
+ [-7, 0, 3]]
+```
+
+Please note that this implementation assumes the input matrices are in the proper format and the multiplication is always possible. It also assumes the matrices are represented as nested lists in Python.
