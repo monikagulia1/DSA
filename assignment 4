@@ -1,0 +1,526 @@
+<aside>
+💡 **Question 1**
+Given three integer arrays arr1, arr2 and arr3 **sorted** in **strictly increasing** order, return a sorted array of **only** the integers that appeared in **all** three arrays.
+
+**Example 1:**
+
+Input: arr1 = [1,2,3,4,5], arr2 = [1,2,5,7,9], arr3 = [1,3,4,5,8]
+
+Output: [1,5]
+
+**Explanation:** Only 1 and 5 appeared in the three arrays.
+
+</aside>
+solution-
+To find the integers that appeared in all three sorted arrays, you can use the concept of merging three sorted arrays. Here's a step-by-step approach to solve this problem:
+
+1. Initialize three pointers, `p1`, `p2`, and `p3`, to the start of each array, respectively.
+2. Initialize an empty list, `result`, to store the common elements.
+3. Iterate until any of the pointers reaches the end of its respective array:
+   - If the element at `arr1[p1]` is equal to the element at `arr2[p2]` and is also equal to the element at `arr3[p3]`, it means that the element is common to all three arrays. Append it to the `result` list.
+   - If the element at `arr1[p1]` is less than either the element at `arr2[p2]` or the element at `arr3[p3]`, increment `p1` by 1.
+   - If the element at `arr2[p2]` is less than either the element at `arr1[p1]` or the element at `arr3[p3]`, increment `p2` by 1.
+   - If the element at `arr3[p3]` is less than either the element at `arr1[p1]` or the element at `arr2[p2]`, increment `p3` by 1.
+4. Return the `result` list.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def arraysIntersection(arr1, arr2, arr3):
+    p1, p2, p3 = 0, 0, 0
+    result = []
+
+    while p1 < len(arr1) and p2 < len(arr2) and p3 < len(arr3):
+        if arr1[p1] == arr2[p2] == arr3[p3]:
+            result.append(arr1[p1])
+            p1 += 1
+            p2 += 1
+            p3 += 1
+        elif arr1[p1] < arr2[p2] or arr1[p1] < arr3[p3]:
+            p1 += 1
+        elif arr2[p2] < arr1[p1] or arr2[p2] < arr3[p3]:
+            p2 += 1
+        else:
+            p3 += 1
+
+    return result
+
+
+# Test the function with the given example
+arr1 = [1, 2, 3, 4, 5]
+arr2 = [1, 2, 5, 7, 9]
+arr3 = [1, 3, 4, 5, 8]
+result = arraysIntersection(arr1, arr2, arr3)
+print("Output:", result)
+```
+
+Output:
+```
+Output: [1, 5]
+```
+
+The function `arraysIntersection` takes three sorted arrays, `arr1`, `arr2`, and `arr3`, as input and returns a sorted list of the integers that appeared in all three arrays.
+
+In the given example, the integers 1 and 5 appeared in all three arrays. Therefore, the output is `[1, 5]`.
+<aside>
+💡 **Question 2**
+
+Given two **0-indexed** integer arrays nums1 and nums2, return *a list* answer *of size* 2 *where:*
+
+- answer[0] *is a list of all **distinct** integers in* nums1 *which are **not** present in* nums2*.*
+- answer[1] *is a list of all **distinct** integers in* nums2 *which are **not** present in* nums1.
+
+**Note** that the integers in the lists may be returned in **any** order.
+
+**Example 1:**
+
+**Input:** nums1 = [1,2,3], nums2 = [2,4,6]
+
+**Output:** [[1,3],[4,6]]
+
+**Explanation:**
+
+For nums1, nums1[1] = 2 is present at index 0 of nums2, whereas nums1[0] = 1 and nums1[2] = 3 are not present in nums2. Therefore, answer[0] = [1,3].
+
+For nums2, nums2[0] = 2 is present at index 1 of nums1, whereas nums2[1] = 4 and nums2[2] = 6 are not present in nums2. Therefore, answer[1] = [4,6].
+
+</aside>
+solution-
+To find the distinct integers in `nums1` that are not present in `nums2` and vice versa, you can use Python sets. Here's a step-by-step approach to solve this problem:
+
+1. Create two sets, `set1` and `set2`, from `nums1` and `nums2`, respectively, to remove duplicate elements and facilitate efficient membership testing.
+2. Initialize two empty lists, `result1` and `result2`, to store the distinct integers in `nums1` and `nums2` that are not present in the other array, respectively.
+3. Iterate through each element in `nums1` and check if it is in `set2`. If it is not, append it to `result1`.
+4. Iterate through each element in `nums2` and check if it is in `set1`. If it is not, append it to `result2`.
+5. Return a list containing `result1` and `result2` as elements in the specified order.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def findDisappearedNumbers(nums1, nums2):
+    set1 = set(nums1)
+    set2 = set(nums2)
+    result1 = [num for num in nums1 if num not in set2]
+    result2 = [num for num in nums2 if num not in set1]
+    return [result1, result2]
+
+
+# Test the function with the given example
+nums1 = [1, 2, 3]
+nums2 = [2, 4, 6]
+result = findDisappearedNumbers(nums1, nums2)
+print("Output:", result)
+```
+
+Output:
+```
+Output: [[1, 3], [4, 6]]
+```
+
+The function `findDisappearedNumbers` takes two integer arrays, `nums1` and `nums2`, as input and returns a list of two lists. The first list contains the distinct integers in `nums1` that are not present in `nums2`, and the second list contains the distinct integers in `nums2` that are not present in `nums1`.
+
+In the given example, the distinct integers in `nums1` that are not present in `nums2` are 1 and 3. The distinct integers in `nums2` that are not present in `nums1` are 4 and 6. Therefore, the output is `[[1, 3], [4, 6]]`.
+
+<aside>
+💡 **Question 3**
+Given a 2D integer array matrix, return *the **transpose** of* matrix.
+
+The **transpose** of a matrix is the matrix flipped over its main diagonal, switching the matrix's row and column indices.
+
+**Example 1:**
+
+Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+
+Output: [[1,4,7],[2,5,8],[3,6,9]]
+
+</aside>
+To find the distinct integers in `nums1` that are not present in `nums2` and vice versa, you can use Python sets. Here's a step-by-step approach to solve this problem:
+
+1. Create two sets, `set1` and `set2`, from `nums1` and `nums2`, respectively, to remove duplicate elements and facilitate efficient membership testing.
+2. Initialize two empty lists, `result1` and `result2`, to store the distinct integers in `nums1` and `nums2` that are not present in the other array, respectively.
+3. Iterate through each element in `nums1` and check if it is in `set2`. If it is not, append it to `result1`.
+4. Iterate through each element in `nums2` and check if it is in `set1`. If it is not, append it to `result2`.
+5. Return a list containing `result1` and `result2` as elements in the specified order.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def findDisappearedNumbers(nums1, nums2):
+    set1 = set(nums1)
+    set2 = set(nums2)
+    result1 = [num for num in nums1 if num not in set2]
+    result2 = [num for num in nums2 if num not in set1]
+    return [result1, result2]
+
+
+# Test the function with the given example
+nums1 = [1, 2, 3]
+nums2 = [2, 4, 6]
+result = findDisappearedNumbers(nums1, nums2)
+print("Output:", result)
+```
+
+Output:
+```
+Output: [[1, 3], [4, 6]]
+```
+
+The function `findDisappearedNumbers` takes two integer arrays, `nums1` and `nums2`, as input and returns a list of two lists. The first list contains the distinct integers in `nums1` that are not present in `nums2`, and the second list contains the distinct integers in `nums2` that are not present in `nums1`.
+
+In the given example, the distinct integers in `nums1` that are not present in `nums2` are 1 and 3. The distinct integers in `nums2` that are not present in `nums1` are 4 and 6. Therefore, the output is `[[1, 3], [4, 6]]`.
+
+<aside>
+💡 **Question 3**
+Given a 2D integer array matrix, return *the **transpose** of* matrix.
+
+The **transpose** of a matrix is the matrix flipped over its main diagonal, switching the matrix's row and column indices.
+
+**Example 1:**
+
+Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+
+Output: [[1,4,7],[2,5,8],[3,6,9]]
+
+</aside>
+solution-
+To find the transpose of a given matrix, you can iterate through the rows and columns of the matrix and construct a new matrix where the rows become columns and the columns become rows.
+
+Here's a step-by-step approach to solve this problem:
+
+1. Initialize an empty list, `transposed`, to store the transposed matrix.
+2. Iterate through the columns of the input matrix. For each column:
+   - Create a new row by iterating through the rows of the input matrix and selecting the corresponding element from the current column.
+   - Append the new row to the `transposed` list.
+3. Return the `transposed` matrix.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def transpose(matrix):
+    rows = len(matrix)
+    columns = len(matrix[0])
+    transposed = []
+
+    for col in range(columns):
+        new_row = []
+        for row in range(rows):
+            new_row.append(matrix[row][col])
+        transposed.append(new_row)
+
+    return transposed
+
+
+# Test the function with the given example
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+result = transpose(matrix)
+print("Output:", result)
+```
+
+Output:
+```
+Output: [[1, 4, 7], [2, 5, 8], [3, 6, 9]]
+```
+
+The function `transpose` takes a 2D integer array `matrix` as input and returns the transpose of the matrix.
+
+In the given example, the transpose of the matrix `[[1, 2, 3], [4, 5, 6], [7, 8, 9]]` is `[[1, 4, 7], [2, 5, 8], [3, 6, 9]]`. Therefore, the output is `[[1, 4, 7], [2, 5, 8], [3, 6, 9]]`.
+
+<aside>
+💡 **Question 4**
+Given an integer array nums of 2n integers, group these integers into n pairs (a1, b1), (a2, b2), ..., (an, bn) such that the sum of min(ai, bi) for all i is **maximized**. Return *the maximized sum*.
+
+**Example 1:**
+
+Input: nums = [1,4,3,2]
+
+Output: 4
+
+**Explanation:** All possible pairings (ignoring the ordering of elements) are:
+
+1. (1, 4), (2, 3) -> min(1, 4) + min(2, 3) = 1 + 2 = 3
+
+2. (1, 3), (2, 4) -> min(1, 3) + min(2, 4) = 1 + 2 = 3
+
+3. (1, 2), (3, 4) -> min(1, 2) + min(3, 4) = 1 + 3 = 4
+
+So the maximum possible sum is 4.
+
+</aside>
+solution-
+To maximize the sum of the minimum values in pairs of integers, you can sort the array and pair up the consecutive elements. The minimum value in each pair will be the smaller element of the two, and the goal is to maximize the sum of these minimum values.
+
+Here's a step-by-step approach to solve this problem:
+
+1. Sort the input array `nums` in non-decreasing order.
+2. Initialize a variable `max_sum` to 0 to store the maximum sum of minimum values.
+3. Iterate over the sorted array starting from index 0 with a step size of 2.
+4. For each pair of consecutive elements, add the smaller element to `max_sum`.
+5. Return the value of `max_sum`.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def arrayPairSum(nums):
+    nums.sort()
+    max_sum = 0
+
+    for i in range(0, len(nums), 2):
+        max_sum += nums[i]
+
+    return max_sum
+
+
+# Test the function with the given example
+nums = [1, 4, 3, 2]
+result = arrayPairSum(nums)
+print("Output:", result)
+```
+
+Output:
+```
+Output: 4
+```
+
+The function `arrayPairSum` takes an integer array `nums` as input and returns the maximum sum of the minimum values in pairs.
+
+In the given example, the sorted array is `[1, 2, 3, 4]`. The possible pairings are `(1, 2)` and `(3, 4)`, and the sums of the minimum values are 1 and 3, respectively. The maximum possible sum is 4, which occurs when we pair up `(1, 2)` and `(3, 4)`. Therefore, the output is `4`.
+
+<aside>
+💡 **Question 5**
+You have n coins and you want to build a staircase with these coins. The staircase consists of k rows where the ith row has exactly i coins. The last row of the staircase **may be** incomplete.
+
+Given the integer n, return *the number of **complete rows** of the staircase you will build*.
+
+**Example 1:**
+
+[]()
+
+![v2.jpg](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4bd91cfa-d2b1-47b3-8197-a72e8dcfff4b/v2.jpg)
+
+**Input:** n = 5
+
+**Output:** 2
+
+**Explanation:** Because the 3rd row is incomplete, we return 2.
+
+</aside>
+solution-
+To determine the number of complete rows in a staircase made of coins, you can use a binary search approach to find the highest possible number of complete rows. Since each row has a specific number of coins, you can calculate the total number of coins required for each potential complete row and compare it with the given number of coins.
+
+Here's a step-by-step approach to solve this problem:
+
+1. Initialize two variables, `left` and `right`, to 1 and `n`, respectively. These variables represent the range of possible numbers of complete rows.
+2. While `left` is less than or equal to `right`, calculate the middle value as `mid` using the formula: `mid = left + (right - left) // 2`.
+3. Calculate the total number of coins required for `mid` complete rows using the formula: `total = (mid * (mid + 1)) // 2`.
+4. If `total` is equal to `n`, return `mid` as the number of complete rows.
+5. If `total` is less than `n`, update `left` to `mid + 1` to search for a higher number of complete rows.
+6. If `total` is greater than `n`, update `right` to `mid - 1` to search for a lower number of complete rows.
+7. After the binary search, return `right` as the number of complete rows.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def arrangeCoins(n):
+    left, right = 1, n
+
+    while left <= right:
+        mid = left + (right - left) // 2
+        total = (mid * (mid + 1)) // 2
+
+        if total == n:
+            return mid
+        elif total < n:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return right
+
+
+# Test the function with the given example
+n = 5
+result = arrangeCoins(n)
+print("Output:", result)
+```
+
+Output:
+```
+Output: 2
+```
+
+The function `arrangeCoins` takes an integer `n` as input and returns the number of complete rows in the staircase.
+
+In the given example, with 5 coins, we can arrange them in 2 complete rows (1 coin in the first row and 2 coins in the second row), leaving 2 coins remaining. Therefore, the output is `2`.
+<aside>
+💡 **Question 6**
+Given an integer array nums sorted in **non-decreasing** order, return *an array of **the squares of each number** sorted in non-decreasing order*.
+
+**Example 1:**
+
+Input: nums = [-4,-1,0,3,10]
+
+Output: [0,1,9,16,100]
+
+**Explanation:** After squaring, the array becomes [16,1,0,9,100].
+After sorting, it becomes [0,1,9,16,100]
+
+</aside>
+solution-
+To find the squares of each number in a sorted integer array and return the resulting array in non-decreasing order, you can use a two-pointer approach. Since the array is already sorted in non-decreasing order, you can compare the absolute values of the numbers and square them accordingly.
+
+Here's a step-by-step approach to solve this problem:
+
+1. Initialize two pointers, `left` and `right`, to the start and end of the array, respectively.
+2. Initialize an empty list, `result`, to store the squared numbers in non-decreasing order.
+3. Iterate while `left` is less than or equal to `right`:
+   - Compare the absolute values of `nums[left]` and `nums[right]`.
+   - If the absolute value of `nums[left]` is greater than or equal to the absolute value of `nums[right]`, square `nums[left]` and append it to `result`. Increment `left` by 1.
+   - If the absolute value of `nums[left]` is less than the absolute value of `nums[right]`, square `nums[right]` and append it to `result`. Decrement `right` by 1.
+4. Reverse the `result` list to obtain the squared numbers in non-decreasing order.
+5. Return the `result` list.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def sortedSquares(nums):
+    left, right = 0, len(nums) - 1
+    result = []
+
+    while left <= right:
+        if abs(nums[left]) >= abs(nums[right]):
+            result.append(nums[left] ** 2)
+            left += 1
+        else:
+            result.append(nums[right] ** 2)
+            right -= 1
+
+    return result[::-1]
+
+
+# Test the function with the given example
+nums = [-4, -1, 0, 3, 10]
+result = sortedSquares(nums)
+print("Output:", result)
+```
+
+Output:
+```
+Output: [0, 1, 9, 16, 100]
+```
+
+The function `sortedSquares` takes an integer array `nums` sorted in non-decreasing order as input and returns an array of the squares of each number, sorted in non-decreasing order.
+
+In the given example, after squaring the array `[-4, -1, 0, 3, 10]`, it becomes `[16, 1, 0, 9, 100]`. After sorting the squared numbers, it becomes `[0, 1, 9, 16, 100]`. Therefore, the output is `[0, 1, 9, 16, 100]`.
+<aside>
+💡 **Question 7**
+You are given an m x n matrix M initialized with all 0's and an array of operations ops, where ops[i] = [ai, bi] means M[x][y] should be incremented by one for all 0 <= x < ai and 0 <= y < bi.
+
+Count and return *the number of maximum integers in the matrix after performing all the operations*
+
+**Example 1:**
+
+![q4.jpg](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4d0890d0-7bc7-4f59-be8e-352d9f3c1c52/q4.jpg)
+
+**Input:** m = 3, n = 3, ops = [[2,2],[3,3]]
+
+**Output:** 4
+
+**Explanation:** The maximum integer in M is 2, and there are four of it in M. So return 4.
+
+</aside>
+solution-
+To find the number of maximum integers in a matrix after performing a set of operations, you can determine the dimensions of the resulting submatrix based on the minimum values of the operations. The maximum integers will be present in the top-left corner of the submatrix.
+
+Here's a step-by-step approach to solve this problem:
+
+1. Initialize `min_row` and `min_col` to `m` and `n` as the initial dimensions of the submatrix.
+2. Iterate through each operation `[ai, bi]` in the `ops` array.
+3. Update `min_row` to the minimum value between `min_row` and `ai`.
+4. Update `min_col` to the minimum value between `min_col` and `bi`.
+5. Return the product of `min_row` and `min_col`.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def maxCount(m, n, ops):
+    min_row = m
+    min_col = n
+
+    for op in ops:
+        min_row = min(min_row, op[0])
+        min_col = min(min_col, op[1])
+
+    return min_row * min_col
+
+
+# Test the function with the given example
+m = 3
+n = 3
+ops = [[2, 2], [3, 3]]
+result = maxCount(m, n, ops)
+print("Output:", result)
+```
+
+Output:
+```
+Output: 4
+```
+
+The function `maxCount` takes the dimensions of the matrix, `m` and `n`, and an array of operations, `ops`, as input and returns the number of maximum integers in the matrix after performing the operations.
+
+In the given example, the dimensions of the resulting submatrix are `2` for both rows and columns. The maximum integer in the submatrix is `2`, and there are `2` by `2` (`4`) occurrences of it. Therefore, the output is `4`.
+<aside>
+💡 **Question 8**
+
+Given the array nums consisting of 2n elements in the form [x1,x2,...,xn,y1,y2,...,yn].
+
+*Return the array in the form* [x1,y1,x2,y2,...,xn,yn].
+
+**Example 1:**
+
+**Input:** nums = [2,5,1,3,4,7], n = 3
+
+**Output:** [2,3,5,4,1,7]
+
+**Explanation:** Since x1=2, x2=5, x3=1, y1=3, y2=4, y3=7 then the answer is [2,3,5,4,1,7].
+
+</aside>
+solution-
+To rearrange the elements in the given array `nums` according to the specified pattern [x1, y1, x2, y2, ..., xn, yn], you can create a new array and fill it with the elements in the desired order.
+
+Here's a step-by-step approach to solve this problem:
+
+1. Initialize an empty list, `result`, to store the rearranged elements.
+2. Iterate `i` from `0` to `n-1` (inclusive):
+   - Append `nums[i]` to `result`.
+   - Append `nums[i+n]` to `result`.
+3. Return the `result` list.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def shuffle(nums, n):
+    result = []
+
+    for i in range(n):
+        result.append(nums[i])
+        result.append(nums[i+n])
+
+    return result
+
+
+# Test the function with the given example
+nums = [2, 5, 1, 3, 4, 7]
+n = 3
+result = shuffle(nums, n)
+print("Output:", result)
+```
+
+Output:
+```
+Output: [2, 3, 5, 4, 1, 7]
+```
+
+The function `shuffle` takes an array `nums` consisting of 2n elements and an integer `n` as input and returns the rearranged array in the specified pattern.
+
+In the given example, the array `nums` has 6 elements, and `n` is 3. The rearranged array according to the pattern [x1, y1, x2, y2, ..., xn, yn] is [2, 3, 5, 4, 1, 7]. Therefore, the output is [2, 3, 5, 4, 1, 7].
