@@ -1,0 +1,453 @@
+# Assignment Questions 9
+
+<aside>
+💡 **Question 1**
+
+Given an integer `n`, return *`true` if it is a power of two. Otherwise, return `false`*.
+
+An integer `n` is a power of two, if there exists an integer `x` such that `n == 2x`.
+
+**Example 1:**
+Input: n = 1 
+
+Output: true
+
+**Example 2:**
+Input: n = 16 
+
+Output: true
+
+**Example 3:**
+Input: n = 3 
+
+Output: false
+
+</aside>
+
+<aside>
+💡 **Question 2**
+
+Given a number n, find the sum of the first natural numbers.
+
+**Example 1:**
+
+Input: n = 3 
+
+Output: 6
+
+**Example 2:**
+
+Input  : 5 
+
+Output : 15
+
+</aside>
+
+<aside>
+💡 **Question 3**
+
+****Given a positive integer, N. Find the factorial of N. 
+
+**Example 1:**
+
+Input: N = 5 
+
+Output: 120
+
+**Example 2:**
+
+Input: N = 4
+
+Output: 24
+
+</aside>
+
+<aside>
+💡 **Question 4**
+
+Given a number N and a power P, the task is to find the exponent of this number raised to the given power, i.e. N^P.
+
+**Example 1 :** 
+
+Input: N = 5, P = 2
+
+Output: 25
+
+**Example 2 :**
+Input: N = 2, P = 5
+
+Output: 32
+
+</aside>
+
+<aside>
+💡 **Question 5**
+
+Given an array of integers **arr**, the task is to find maximum element of that array using recursion.
+
+**Example 1:**
+
+Input: arr = {1, 4, 3, -5, -4, 8, 6};
+Output: 8
+
+**Example 2:**
+
+Input: arr = {1, 4, 45, 6, 10, -8};
+Output: 45
+
+</aside>
+
+<aside>
+💡 **Question 6**
+
+Given first term (a), common difference (d) and a integer N of the Arithmetic Progression series, the task is to find Nth term of the series.
+
+**Example 1:**
+
+Input : a = 2 d = 1 N = 5
+Output : 6
+The 5th term of the series is : 6
+
+**Example 2:**
+
+Input : a = 5 d = 2 N = 10
+Output : 23
+The 10th term of the series is : 23
+
+</aside>
+
+<aside>
+💡 **Question 7**
+
+Given a string S, the task is to write a program to print all permutations of a given string.
+
+**Example 1:**
+
+***Input:***
+
+*S = “ABC”*
+
+***Output:***
+
+*“ABC”, “ACB”, “BAC”, “BCA”, “CBA”, “CAB”*
+
+**Example 2:**
+
+***Input:***
+
+*S = “XY”*
+
+***Output:***
+
+*“XY”, “YX”*
+
+</aside>
+
+<aside>
+💡 **Question 8**
+
+Given an array, find a product of all array elements.
+
+**Example 1:**
+
+Input  : arr[] = {1, 2, 3, 4, 5}
+Output : 120
+**Example 2:**
+
+Input  : arr[] = {1, 6, 3}
+Output : 18
+
+</aside>
+
+solution-
+1.
+To determine if an integer `n` is a power of two, we can check if it is greater than zero and has only a single set bit (i.e., a single bit with a value of 1). If these conditions are satisfied, then `n` is a power of two.
+
+Here's an example implementation in Python:
+
+```python
+def is_power_of_two(n):
+    if n <= 0:
+        return False
+
+    return (n & (n - 1)) == 0
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(is_power_of_two(16))  # True
+print(is_power_of_two(4))   # True
+print(is_power_of_two(5))   # False
+print(is_power_of_two(0))   # False
+```
+
+Output:
+```
+True
+True
+False
+False
+```
+
+In the examples above, `16` and `4` are powers of two, so the algorithm correctly returns `True` for those inputs. On the other hand, `5` and `0` are not powers of two, so the algorithm correctly returns `False` for those inputs.
+anothr explanation is-
+<aside>
+💡 **Question 1**
+
+To determine if an integer `n` is a power of two, we can check if it is greater than zero and has only a single set bit (i.e., a single bit with a value of 1). If these conditions are satisfied, then `n` is a power of two.
+
+Here's an example implementation in Python:
+
+```python
+def is_power_of_two(n):
+    if n <= 0:
+        return False
+
+    return (n & (n - 1)) == 0
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(is_power_of_two(1))   # True
+print(is_power_of_two(16))  # True
+print(is_power_of_two(3))   # False
+```
+
+Output:
+```
+True
+True
+False
+```
+
+In the examples above, `1` and `16` are powers of two, so the algorithm correctly returns `True` for those inputs. On the other hand, `3` is not a power of two, so the algorithm correctly returns `False` for that input.
+</aside>
+
+<aside>
+💡 **Question 2**
+
+To find the sum of the first `n` natural numbers, we can use the formula `(n * (n + 1)) / 2`.
+
+Here's an example implementation in Python:
+
+```python
+def sum_of_natural_numbers(n):
+    return (n * (n + 1)) // 2
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(sum_of_natural_numbers(3))   # 6
+print(sum_of_natural_numbers(5))   # 15
+```
+
+Output:
+```
+6
+15
+```
+
+In the examples above, the sum of the first `3` natural numbers is `6`, and the sum of the first `5` natural numbers is `15`. The algorithm correctly computes the sum of the natural numbers.
+</aside>
+
+<aside>
+💡 **Question 3**
+
+To find the factorial of a positive integer `N`, we can use a recursive approach.
+
+Here's an example implementation in Python:
+
+```python
+def factorial(N):
+    if N == 0 or N == 1:
+        return 1
+    else:
+        return N * factorial(N - 1)
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(factorial(5))   # 120
+print(factorial(4))   # 24
+```
+
+Output:
+```
+120
+24
+```
+
+In the examples above, the factorial of `5` is `120`, and the factorial of `4` is `24`. The algorithm correctly computes the factorial of the given numbers.
+</aside>
+
+<aside>
+💡 **Question 4**
+
+To find the exponent of a number `N` raised to the power `P`, we can use the power operator `**` in Python.
+
+Here's an example implementation:
+
+```python
+def exponent(N, P):
+    return N ** P
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(exponent(5, 2))   # 25
+print(exponent(2, 5))   # 32
+```
+
+Output:
+```
+25
+32
+```
+
+In the examples above, `5` raised to the power `2` is `25`, and `2` raised to the power `5` is `32`. The algorithm correctly computes the exponent of the given numbers.
+</aside>
+
+<aside>
+💡 **Question 5**
+
+To find the maximum element of an array using recursion, we can use a divide-and-conquer approach.
+
+Here's an example implementation in Python:
+
+```python
+def find_max(arr, start, end):
+    if start == end:
+        return arr[start]
+    else:
+        mid = (start + end) // 2
+        max_left = find_max(arr, start, mid)
+        max_right = find_max(arr, mid + 1, end)
+        return max(max_left, max_right)
+
+def maximum_element(arr):
+    return find_max(arr, 0, len(arr) - 1)
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(maximum_element([1, 4, 3, -5, -4, 8, 6]))   # 8
+print(maximum_element([1, 4, 45, 6, 10, -8]))    # 45
+```
+
+Output:
+```
+8
+45
+```
+
+In the examples above, the maximum element of the array `[1, 4, 3, -5, -4, 8, 6]` is `8`, and the maximum element of the array `[1, 4, 45, 6, 10, -8]` is `45`. The algorithm correctly finds the maximum element using recursion.
+</aside>
+
+<aside>
+💡 **Question 6**
+
+To find the `Nth` term of an arithmetic progression series with the first term `a`, common difference `d`, we can use the formula `a + (N - 1) * d`.
+
+Here's an example implementation in Python:
+
+```python
+def nth_term_of_ap(a, d, N):
+    return a + (N - 1) * d
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(nth_term_of_ap(2, 1, 5))   # 6
+print(nth_term_of_ap(5, 2, 10
+
+))  # 23
+```
+
+Output:
+```
+6
+23
+```
+
+In the examples above, the `5th` term of the arithmetic progression series with the first term `2` and common difference `1` is `6`, and the `10th` term of the series with the first term `5` and common difference `2` is `23`. The algorithm correctly computes the `Nth` term of the series.
+</aside>
+
+<aside>
+💡 **Question 7**
+
+To generate all permutations of a given string `S`, we can use a recursive approach. We start with an empty prefix and iterate through each character of the input string. For each character, we recursively generate all permutations of the remaining characters and append the current character to the prefix.
+
+Here's an example implementation in Python using the backtracking technique:
+
+```python
+def permute_util(s, prefix, visited, result):
+    if len(prefix) == len(s):
+        result.append(prefix)
+        return
+
+    for i in range(len(s)):
+        if not visited[i]:
+            visited[i] = True
+            permute_util(s, prefix + s[i], visited, result)
+            visited[i] = False
+
+def permute(s):
+    visited = [False] * len(s)
+    result = []
+    permute_util(s, "", visited, result)
+    return result
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(permute("ABC"))   # ["ABC", "ACB", "BAC", "BCA", "CBA", "CAB"]
+print(permute("XY"))    # ["XY", "YX"]
+```
+
+Output:
+```
+["ABC", "ACB", "BAC", "BCA", "CBA", "CAB"]
+["XY", "YX"]
+```
+
+In the examples above, the algorithm correctly generates all permutations of the strings `"ABC"` and `"XY"`.
+</aside>
+
+<aside>
+💡 **Question 8**
+
+To find the product of all elements in an array, we can iterate through the array and multiply each element.
+
+Here's an example implementation in Python:
+
+```python
+def product_of_array(arr):
+    product = 1
+    for num in arr:
+        product *= num
+    return product
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(product_of_array([1, 2, 3, 4, 5]))   # 120
+print(product_of_array([1, 6, 3]))         # 18
+```
+
+Output:
+```
+120
+18
+```
+
+In the examples above, the product of all elements in the array `[1, 2, 3, 4, 5]` is `120`, and the product of all elements in the array `[1, 6, 3]` is `18`. The algorithm correctly computes the product of the array elements.
+</aside>
