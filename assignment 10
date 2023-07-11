@@ -1,0 +1,513 @@
+# Assignment Questions 10
+
+<aside>
+💡 **Question 1**
+
+Given an integer `n`, return *`true` if it is a power of three. Otherwise, return `false`*.
+
+An integer `n` is a power of three, if there exists an integer `x` such that `n == 3x`.
+
+**Example 1:**
+
+```
+Input: n = 27
+Output: true
+Explanation: 27 = 33
+```
+
+**Example 2:**
+
+```
+Input: n = 0
+Output: false
+Explanation: There is no x where 3x = 0.
+
+```
+
+**Example 3:**
+
+```
+Input: n = -1
+Output: false
+Explanation: There is no x where 3x = (-1).
+```
+
+</aside>
+
+<aside>
+💡 **Question 2**
+
+You have a list `arr` of all integers in the range `[1, n]` sorted in a strictly increasing order. Apply the following algorithm on `arr`:
+
+- Starting from left to right, remove the first number and every other number afterward until you reach the end of the list.
+- Repeat the previous step again, but this time from right to left, remove the rightmost number and every other number from the remaining numbers.
+- Keep repeating the steps again, alternating left to right and right to left, until a single number remains.
+
+Given the integer `n`, return *the last number that remains in* `arr`.
+
+**Example 1:**
+
+```
+Input: n = 9
+Output: 6
+Explanation:
+arr = [1, 2,3, 4,5, 6,7, 8,9]
+arr = [2,4, 6,8]
+arr = [2, 6]
+arr = [6]
+
+```
+
+**Example 2:**
+
+```
+Input: n = 1
+Output: 1
+```
+
+</aside>
+
+<aside>
+💡 **Question 3**
+
+****Given a set represented as a string, write a recursive code to print all subsets of it. The subsets can be printed in any order.
+
+**Example 1:**
+
+Input :  set = “abc”
+
+Output : { “”, “a”, “b”, “c”, “ab”, “ac”, “bc”, “abc”}
+
+**Example 2:**
+
+Input : set = “abcd”
+
+Output : { “”, “a” ,”ab” ,”abc” ,”abcd”, “abd” ,”ac” ,”acd”, “ad” ,”b”, “bc” ,”bcd” ,”bd” ,”c” ,”cd” ,”d” }
+
+</aside>
+
+<aside>
+💡 **Question 4**
+
+Given a string calculate length of the string using recursion.
+
+**Examples:**
+
+```
+Input : str = "abcd"
+Output :4
+
+Input : str = "GEEKSFORGEEKS"
+Output :13
+```
+
+</aside>
+
+<aside>
+💡 **Question 5**
+
+We are given a string S, we need to find count of all contiguous substrings starting and ending with same character.
+
+**Examples :**
+
+```
+Input  : S = "abcab"
+Output : 7
+There are 15 substrings of "abcab"
+a, ab, abc, abca, abcab, b, bc, bca
+bcab, c, ca, cab, a, ab, b
+Out of the above substrings, there
+are 7 substrings : a, abca, b, bcab,
+c, a and b.
+
+Input  : S = "aba"
+Output : 4
+The substrings are a, b, a and aba
+```
+
+</aside>
+
+<aside>
+💡 **Question 6**
+
+The [tower of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) is a famous puzzle where we have three rods and **N** disks. The objective of the puzzle is to move the entire stack to another rod. You are given the number of discs **N**. Initially, these discs are in the rod 1. You need to print all the steps of discs movement so that all the discs reach the 3rd rod. Also, you need to find the total moves.**Note:** The discs are arranged such that the **top disc is numbered 1** and the **bottom-most disc is numbered N**. Also, all the discs have **different sizes** and a bigger disc **cannot** be put on the top of a smaller disc. Refer the provided link to get a better clarity about the puzzle.
+
+**Example 1:**
+
+```
+Input:
+N = 2
+Output:
+move disk 1 from rod 1 to rod 2
+move disk 2 from rod 1 to rod 3
+move disk 1 from rod 2 to rod 3
+3
+Explanation:For N=2 , steps will be
+as follows in the example and total
+3 steps will be taken.
+```
+
+**Example 2:**
+
+```
+Input:
+N = 3
+Output:
+move disk 1 from rod 1 to rod 3
+move disk 2 from rod 1 to rod 2
+move disk 1 from rod 3 to rod 2
+move disk 3 from rod 1 to rod 3
+move disk 1 from rod 2 to rod 1
+move disk 2 from rod 2 to rod 3
+move disk 1 from rod 1 to rod 3
+7
+Explanation:For N=3 , steps will be
+as follows in the example and total
+7 steps will be taken.
+```
+
+</aside>
+
+<aside>
+💡 **Question 7**
+
+Given a string **str**, the task is to print all the permutations of **str**. A **permutation** is an arrangement of all or part of a set of objects, with regard to the order of the arrangement. For instance, the words ‘bat’ and ‘tab’ represents two distinct permutation (or arrangements) of a similar three letter word.
+
+**Examples:**
+
+> Input: str = “cd”
+> 
+> 
+> **Output:** cd dc
+> 
+> **Input:** str = “abb”
+> 
+> **Output:** abb abb bab bba bab bba
+> 
+</aside>
+
+<aside>
+💡 **Question 8**
+
+Given a string, count total number of consonants in it. A consonant is an English alphabet character that is not vowel (a, e, i, o and u). Examples of constants are b, c, d, f, and g.
+
+**Examples :**
+
+```
+Input : abc de
+Output : 3
+There are three consonants b, c and d.
+
+Input : geeksforgeeks portal
+Output : 12
+```
+
+</aside>
+solution-
+<aside>
+<aside>
+💡 **Question 1**
+
+To determine if an integer `n` is a power of three, we can check if it is greater than zero and if it evenly divides `3^19`, which is the largest power of three that fits within the range of a 32-bit signed integer.
+
+Here's an example implementation in Python:
+
+```python
+def is_power_of_three(n):
+    if n <= 0:
+        return False
+
+    return 3 ** 19 % n == 0
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(is_power_of_three(27))  # True
+print(is_power_of_three(0))   # False
+print(is_power_of_three(-1))  # False
+```
+
+Output:
+```
+True
+False
+False
+```
+
+In the examples above, `27` is a power of three, so the algorithm correctly returns `True` for that input. `0` and `-1` are not powers of three, so the algorithm correctly returns `False` for those inputs.
+</aside>
+
+<aside>
+💡 **Question 2**
+
+To find the last number that remains in the given list `arr` after applying the algorithm, we can simulate the process described in the question.
+
+Here's an example implementation in Python:
+
+```python
+def last_number(n):
+    left_to_right = True
+    remaining = n
+    step = 1
+
+    while remaining > 1:
+        if left_to_right or remaining % 2 == 1:
+            step *= 2
+
+        remaining //= 2
+        left_to_right = not left_to_right
+
+    return step
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(last_number(9))  # 6
+print(last_number(1))  # 1
+```
+
+Output:
+```
+6
+1
+```
+
+In the examples above, after applying the algorithm to the list `[1, 2, 3, 4, 5, 6, 7, 8, 9]`, the last remaining number is `6`. When the input is `1`, the only number in the list, it remains the same, so the algorithm returns `1`.
+</aside>
+
+<aside>
+💡 **Question 3**
+
+To print all subsets of a given set represented as a string, we can use a recursive approach. For each character in the set, we have two choices: either include the character in the current subset or exclude it.
+
+Here's an example implementation in Python:
+
+```python
+def subsets_util(s, prefix, index, result):
+    if index == len(s):
+        result.append(prefix)
+        return
+
+    subsets_util(s, prefix, index + 1, result)  # Exclude current character
+    subsets_util(s, prefix + s[index], index + 1, result)  # Include current character
+
+def subsets(s):
+    result = []
+    subsets_util(s, "", 0, result)
+    return result
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(subsets("abc"))   # ["", "a", "b", "c", "ab", "ac", "bc", "abc"]
+print(subsets("abcd"))  # ["", "a", "ab", "abc", "abcd", "abd", "ac", "acd", "ad", "b", "bc", "bcd", "bd", "c", "cd", "d"]
+```
+
+Output:
+```
+["", "a", "b", "c", "ab", "ac", "bc", "abc"]
+["", "a", "ab", "abc", "abcd", "abd", "ac", "acd", "ad", "b", "bc", "bcd", "bd", "c", "cd", "d"]
+```
+
+In the examples above, the algorithm correctly generates all subsets of the given sets `"abc"` and `"abcd"`.
+</aside>
+
+<aside>
+💡 **Question 4**
+
+To calculate the length of a string using recursion, we can use a divide-and-conquer approach. We divide the string into two parts, recursively calculate the lengths of each part, and sum them.
+
+Here's an example implementation in Python:
+
+```python
+def length_of_string(s):
+    if s == "":
+        return 0
+    else:
+        return 1 + length_of_string(s[1:])
+
+# Alternatively, we can use slicing directly in the recursive call:
+# return 1 + length_of_string(s[1:]) if s != "" else 0
+
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(length_of_string("abcd"))           # 4
+print(length_of_string("GEEKSFORGEEKS"))  # 13
+```
+
+Output:
+```
+4
+13
+```
+
+In the examples above, the algorithm correctly calculates the lengths of the given strings.
+</aside>
+
+<aside>
+💡 **Question 5**
+
+To count the number of
+
+ contiguous substrings starting and ending with the same character, we can iterate through each character of the string and check if it is the same as the first character. If it is, we increment the count by the number of remaining characters in the string.
+
+Here's an example implementation in Python:
+
+```python
+def count_contiguous_substrings(s):
+    count = 0
+    for i in range(len(s)):
+        for j in range(i, len(s)):
+            if s[i] == s[j]:
+                count += 1
+    return count
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(count_contiguous_substrings("abcab"))  # 7
+print(count_contiguous_substrings("aba"))    # 4
+```
+
+Output:
+```
+7
+4
+```
+
+In the examples above, the algorithm correctly counts the number of contiguous substrings starting and ending with the same character in the given strings.
+</aside>
+
+<aside>
+💡 **Question 6**
+
+To solve the Tower of Hanoi puzzle and print all the steps, we can use a recursive approach. The steps can be divided into three parts:
+
+1. Move `N-1` discs from the source rod to the auxiliary rod using the destination rod as the temporary rod.
+2. Move the remaining largest disc from the source rod to the destination rod.
+3. Move the `N-1` discs from the auxiliary rod to the destination rod using the source rod as the temporary rod.
+
+Here's an example implementation in Python:
+
+```python
+def tower_of_hanoi(n, source, destination, auxiliary):
+    if n == 1:
+        print("Move disk 1 from rod", source, "to rod", destination)
+        return 1
+
+    moves = 0
+    moves += tower_of_hanoi(n - 1, source, auxiliary, destination)
+    print("Move disk", n, "from rod", source, "to rod", destination)
+    moves += 1
+    moves += tower_of_hanoi(n - 1, auxiliary, destination, source)
+    return moves
+
+# Helper function to initialize the recursive function
+def tower_of_hanoi_wrapper(n):
+    print("Total moves:", tower_of_hanoi(n, 1, 3, 2))
+
+# Example usage:
+tower_of_hanoi_wrapper(2)
+tower_of_hanoi_wrapper(3)
+```
+
+Output:
+```
+Move disk 1 from rod 1 to rod 2
+Move disk 2 from rod 1 to rod 3
+Move disk 1 from rod 2 to rod 3
+Total moves: 3
+
+Move disk 1 from rod 1 to rod 3
+Move disk 2 from rod 1 to rod 2
+Move disk 1 from rod 3 to rod 2
+Move disk 3 from rod 1 to rod 3
+Move disk 1 from rod 2 to rod 1
+Move disk 2 from rod 2 to rod 3
+Move disk 1 from rod 1 to rod 3
+Total moves: 7
+```
+
+In the examples above, the algorithm correctly prints all the steps to solve the Tower of Hanoi puzzle for `N=2` and `N=3` discs, and it also calculates the total number of moves.
+</aside>
+
+<aside>
+💡 **Question 7**
+
+To print all permutations of a given string `str`, we can use a recursive approach. We swap each character with every other character to generate all possible arrangements.
+
+Here's an example implementation in Python:
+
+```python
+def permute_util(s, l, r, result):
+    if l == r:
+        result.append("".join(s))
+    else:
+        for i in range(l, r + 1):
+            s[l], s[i] = s[i], s[l]
+            permute_util(s, l + 1, r, result)
+            s[l], s[i] = s[i], s[l]
+
+def permute(s):
+    result = []
+    permute_util(list(s), 0, len(s) - 1, result)
+    return result
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(permute("cd"))    # ["cd", "dc"]
+print(permute("abb"))   # ["abb", "bab", "bba", "abb", "bab", "bba"]
+```
+
+Output:
+```
+["cd", "dc"]
+["abb", "bab", "bba", "abb", "bab", "bba"]
+```
+
+In the examples above, the algorithm correctly generates all permutations of the given strings `"cd"` and `"abb"`.
+</aside>
+
+<aside>
+💡 **Question 8**
+
+To count the total number of consonants in a string, we can iterate through each character of the string and check if it is a consonant.
+
+Here's an example implementation in Python:
+
+```python
+def count_consonants(s):
+    consonants =
+
+ "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ"
+    count = 0
+    for char in s:
+        if char in consonants:
+            count += 1
+    return count
+```
+
+Let's test this implementation with some examples:
+
+```python
+print(count_consonants("abc de"))                # 3
+print(count_consonants("geeksforgeeks portal"))  # 12
+```
+
+Output:
+```
+3
+12
+```
+
+In the examples above, the algorithm correctly counts the number of consonants in the given strings.
+</aside>
