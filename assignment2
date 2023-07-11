@@ -1,0 +1,378 @@
+<aside>
+💡 **Question 1**
+Given an integer array nums of 2n integers, group these integers into n pairs (a1, b1), (a2, b2),..., (an, bn) such that the sum of min(ai, bi) for all i is maximized. Return the maximized sum.
+
+**Example 1:**
+Input: nums = [1,4,3,2]
+Output: 4
+
+**Explanation:** All possible pairings (ignoring the ordering of elements) are:
+
+1. (1, 4), (2, 3) -> min(1, 4) + min(2, 3) = 1 + 2 = 3
+2. (1, 3), (2, 4) -> min(1, 3) + min(2, 4) = 1 + 2 = 3
+3. (1, 2), (3, 4) -> min(1, 2) + min(3, 4) = 1 + 3 = 4
+So the maximum possible sum is 4
+
+solution-
+a=[]
+s=[]
+l1=[]
+rl=[]
+n=int(input("Number of elements in array,must be even :"))
+def all_pairs(lst):
+    if len(lst) < 2:
+        yield []
+        return
+    if len(lst) % 2 == 1:
+        # Handle odd length list
+        for i in range(len(lst)):
+            for result in all_pairs(lst[:i] + lst[i+1:]):
+                yield result
+    else:
+        a = lst[0]
+        for i in range(1,len(lst)):
+            pair = (a,lst[i])
+            for rest in all_pairs(lst[1:i]+lst[i+1:]):
+                yield [pair] + rest
+
+
+if n%2==0:
+    for i in range(0,n):
+        l=int(input())
+        a.append(l)
+    for x in all_pairs(a):
+        print(x)
+        
+        for i in range(0,len(x)):
+            n1=min(x[i])
+            l1.append(n1)
+    
+    for i in range(0,len(l1),len(x)):
+        su=0
+        for j in range(0,len(x)):
+            su+=l1[i+j]
+        rl.append([su])
+    print(rl)
+    print(f"so the maximum sum is: {max(rl)}")
+        
+        
+        
+else:
+    print("number of element in array is not even")
+
+Question 2
+Alice has n candies, where the ith candy is of type candyType[i]. Alice noticed that she started to gain weight, so she visited a doctor. 
+
+The doctor advised Alice to only eat n / 2 of the candies she has (n is always even). Alice likes her candies very much, and she wants to eat the maximum number of different types of candies while still following the doctor's advice. 
+
+Given the integer array candyType of length n, return the maximum number of different types of candies she can eat if she only eats n / 2 of them.
+
+Example 1:
+Input: candyType = [1,1,2,2,3,3]
+Output: 3
+
+Explanation: Alice can only eat 6 / 2 = 3 candies. Since there are only 3 types, she can eat one of each type.
+solution-
+import numpy as np
+a=[]
+
+n=int(input("Number of elements in array,must be even :"))
+for i in range(0,n):
+        l=int(input())
+        a.append(l)
+print(f"she can eat only{n/2} candies")
+
+a.sort()
+d=np.unique(a)
+d=list(d)
+type(d)
+print(f"candies are={d}")
+c=[]
+for i in range(0,len(d)):
+    c.append(a.count(d[i]))
+print(f"count of each any is {c}")
+eat=n/2
+duplicate=[]
+for i in range(0,len(d)):
+    duplicate.append(0)
+    
+dup=0
+for i in range(0,len(d)):
+    c[i]-=1
+    duplicate[i]+=1
+    dup+=1
+    if eat==dup:
+        break
+    else:
+        i+=1
+print(f"she will eat {duplicate} candy={d} and remaining canies are{c}")
+
+Question 3
+We define a harmonious array as an array where the difference between its maximum value
+and its minimum value is exactly 1.
+
+Given an integer array nums, return the length of its longest harmonious subsequence
+among all its possible subsequences.
+
+A subsequence of an array is a sequence that can be derived from the array by deleting some or no elements without changing the order of the remaining elements.
+
+Example 1:
+Input: nums = [1,3,2,2,5,2,3,7]
+Output: 5
+solution-
+# Function to find the length of longest subsequence
+def longestSubseqWithDiffOne(arr, n):
+	# Initialize the dp[] array with 1 as a
+	# single element will be of 1 length
+	dp = [1 for i in range(n)]
+
+	# Start traversing the given array
+	for i in range(n):
+		# Compare with all the previous elements
+		for j in range(i):
+			# If the element is consecutive then
+			# consider this subsequence and update
+			# dp[i] if required.
+			if ((arr[i] == arr[j]+1) or (arr[i] == arr[j]-1)):
+				dp[i] = max(dp[i], dp[j]+1)
+
+	# Longest length will be the maximum value
+	# of dp array.
+	result = 1
+	for i in range(n):
+		if (result < dp[i]):
+			result = dp[i]
+			
+	return result
+
+# Driver code
+arr = [1, 2, 3, 4, 5, 3, 2]
+# Longest subsequence with one difference is
+# {1, 2, 3, 4, 3, 2}
+n = len(arr)
+print (longestSubseqWithDiffOne(arr, n))
+Explanation: The longest harmonious subsequence is [3,2,2,2,3].
+Question 4
+You have a long flowerbed in which some of the plots are planted, and some are not.
+However, flowers cannot be planted in adjacent plots.
+Given an integer array flowerbed containing 0's and 1's, where 0 means empty and 1 means not empty, and an integer n, return true if n new flowers can be planted in the flowerbed without violating the no-adjacent-flowers rule and false otherwise.
+
+Example 1:
+Input: flowerbed = [1,0,0,0,1], n = 1
+Output: true
+solution-
+a=[]
+n=int(input("enter number of flower bed having no adjacent flower accordiing to u"))
+s=int(input("enter number of flower bed"))
+print("please enter 0 or 1")
+for i in range(0,s):
+        l=int(input())
+        if l>=2 or l<=-1:
+            print("enter 0 or 1")
+            i-=1
+        
+        a.append(l)
+c=0
+for i in range(0,s):
+    if i==0 and a[i]==1 and a[i+1]!=1:
+        c+=1
+    elif i==s-1 and a[s-1]==1 and a[i-1]!=1:
+        c+=1
+    elif a[i]==1 and a[i-1]!=1 and a[i+1]!=1:
+        c+=1
+    else:
+        i+=1
+if c==n:
+    print("true")
+else:
+    print("false")
+    
+Given an integer array nums, find three numbers whose product is maximum and return the maximum product.
+
+Example 1:
+Input: nums = [1,2,3]
+Output: 6
+solution-
+mport numpy as np
+l=[]
+n=int(input("total number of element"))
+for j in range(0,n):
+    a=int(input(print("enter number")))
+    l.append(a)
+l.sort()
+l=np.unique(l)
+l=list(l)
+print(l)
+print(f"maximum product is {l[len(l)-1]*l[len(l)-2]*l[len(l)-3]}")
+
+Question 6
+Given an array of integers nums which is sorted in ascending order, and an integer target,
+write a function to search target in nums. If target exists, then return its index. Otherwise,
+return -1.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+Input: nums = [-1,0,3,5,9,12], target = 9
+Output: 4
+
+Explanation: 9 exists in nums and its index is 4
+To search for a target element in a sorted array of integers with a runtime complexity of O(log n), you can use the binary search algorithm. Here's the Python code that implements it:
+
+```python
+def binarySearch(nums, target):
+    left = 0
+    right = len(nums) - 1
+
+    while left <= right:
+        mid = left + (right - left) // 2
+
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1
+
+
+# Test the function with the given example
+nums = [-1, 0, 3, 5, 9, 12]
+target = 9
+result = binarySearch(nums, target)
+print("Output:", result)
+```
+
+Output:
+```
+Output: 4
+```
+
+The function `binarySearch` takes an array `nums` and a target integer as input and returns the index of the target element in the array. If the target doesn't exist in the array, it returns -1.
+
+In the given example, the target is 9, and it exists in the array at index 4. Therefore, the output is 4.
+
+
+Question 7
+An array is monotonic if it is either monotone increasing or monotone decreasing.
+
+An array nums is monotone increasing if for all i <= j, nums[i] <= nums[j]. An array nums is
+monotone decreasing if for all i <= j, nums[i] >= nums[j].
+
+Given an integer array nums, return true if the given array is monotonic, or false otherwise.
+
+Example 1:
+Input: nums = [1,2,2,3]
+Output: true
+solution-
+To determine if an array is monotonic, you can check if it is either monotone increasing or monotone decreasing. You can do this by iterating through the array and comparing adjacent elements.
+
+Here's the Python code that solves this problem:
+
+```python
+def isMonotonic(nums):
+    is_increasing = True
+    is_decreasing = True
+
+    # Check if the array is monotone increasing
+    for i in range(len(nums) - 1):
+        if nums[i] > nums[i + 1]:
+            is_increasing = False
+            break
+
+    # Check if the array is monotone decreasing
+    for i in range(len(nums) - 1):
+        if nums[i] < nums[i + 1]:
+            is_decreasing = False
+            break
+
+    # Return True if the array is monotone increasing or monotone decreasing
+    return is_increasing or is_decreasing
+
+
+# Test the function with the given example
+nums = [1, 2, 2, 3]
+result = isMonotonic(nums)
+print("Output:", result)
+```
+
+Output:
+```
+Output: True
+```
+
+The function `isMonotonic` takes an array `nums` as input and returns `True` if the array is monotonic (either monotone increasing or monotone decreasing), and `False` otherwise.
+
+In the given example, the array `[1, 2, 2, 3]` is monotone increasing because each element is less than or equal to the next element. Therefore, the output is `True`.
+
+
+Question 8
+You are given an integer array nums and an integer k.
+
+In one operation, you can choose any index i where 0 <= i < nums.length and change nums[i] to nums[i] + x where x is an integer from the range [-k, k]. You can apply this operation at most once for each index i.
+
+The score of nums is the difference between the maximum and minimum elements in nums.
+
+Return the minimum score of nums after applying the mentioned operation at most once for each index in it.
+
+Example 1:
+Input: nums = [1], k = 0
+Output: 0
+
+Explanation: The score is max(nums) - min(nums) = 1 - 1 = 0.
+
+
+solution-
+To find the minimum score of the array after applying the mentioned operation at most once for each index, you can consider the following steps:
+
+1. Find the minimum and maximum elements in the original array.
+2. Calculate the difference between the maximum and minimum elements, which represents the initial score.
+3. Iterate over each element in the array and consider two scenarios:
+   a. If the current element minus k is less than the current minimum element, update the minimum element.
+   b. If the current element plus k is greater than the current maximum element, update the maximum element.
+4. Calculate the difference between the updated maximum and minimum elements, which represents the modified score.
+5. Return the minimum value between the initial score and the modified score.
+
+Here's the Python code that implements this approach:
+
+```python
+def minimumScore(nums, k):
+    # Find the minimum and maximum elements in the original array
+    minimum = min(nums)
+    maximum = max(nums)
+
+    # Calculate the initial score
+    initial_score = maximum - minimum
+
+    # Iterate over each element and update the minimum and maximum elements
+    for num in nums:
+        # Update the minimum element if necessary
+        if num - k < minimum:
+            minimum = num - k
+
+        # Update the maximum element if necessary
+        if num + k > maximum:
+            maximum = num + k
+
+    # Calculate the modified score
+    modified_score = maximum - minimum
+
+    # Return the minimum value between the initial score and the modified score
+    return min(initial_score, modified_score)
+
+
+# Test the function with the given example
+nums = [1]
+k = 0
+result = minimumScore(nums, k)
+print("Output:", result)
+```
+
+Output:
+```
+Output: 0
+```
+
+The function `minimumScore` takes an array `nums` and an integer `k` as input and returns the minimum score of the array after applying the mentioned operation at most once for each index.
+
+In the given example, the array `[1]` already has the minimum score of 0, so the output is 0.
