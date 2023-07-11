@@ -1,0 +1,508 @@
+Question 1
+Given an integer array nums of length n and an integer target, find three integers
+in nums such that the sum is closest to the target.
+Return the sum of the three integers.
+
+You may assume that each input would have exactly one solution.
+
+Example 1:
+Input: nums = [-1,2,1,-4], target = 1
+Output: 2
+
+Explanation: The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+solution-
+To find three integers in an array whose sum is closest to a target value, you can use a two-pointer approach along with sorting the array. Here's the step-by-step process to solve this problem:
+
+1. Sort the given array `nums` in ascending order.
+2. Initialize a variable `closest_sum` to store the closest sum to the target. Set it initially to a large value, such as infinity.
+3. Iterate through the array `nums` from index 0 to index n-3 (as we need three integers).
+4. Within each iteration, initialize two pointers: `left` at index i+1 and `right` at index n-1.
+5. While the `left` pointer is less than the `right` pointer, calculate the current sum of the three integers: `current_sum = nums[i] + nums[left] + nums[right]`.
+6. If the absolute difference between `current_sum` and the target is smaller than the absolute difference between `closest_sum` and the target, update `closest_sum` to `current_sum`.
+7. If `current_sum` is less than the target, increment the `left` pointer.
+8. If `current_sum` is greater than the target, decrement the `right` pointer.
+9. Repeat steps 5-8 until the `left` pointer becomes greater than or equal to the `right` pointer.
+10. After the iterations, `closest_sum` will store the sum closest to the target.
+11. Return the `closest_sum`.
+
+Here's the Python code that implements the above algorithm:
+
+```python
+def threeSumClosest(nums, target):
+    nums.sort()  # Sort the array in ascending order
+    n = len(nums)
+    closest_sum = float('inf')
+
+    for i in range(n - 2):
+        left = i + 1
+        right = n - 1
+
+        while left < right:
+            current_sum = nums[i] + nums[left] + nums[right]
+            if abs(current_sum - target) < abs(closest_sum - target):
+                closest_sum = current_sum
+
+            if current_sum < target:
+                left += 1
+            elif current_sum > target:
+                right -= 1
+            else:
+                return target
+
+    return closest_sum
+
+
+# Test the function with the given example
+nums = [-1, 2, 1, -4]
+target = 1
+result = threeSumClosest(nums, target)
+print("Output:", result)
+```
+
+Output:
+```
+Output: 2
+```
+
+The function `threeSumClosest` takes an array `nums` and a target integer as input and returns the sum of three integers in the array that is closest to the target.
+
+In the given example, the sum closest to the target 1 is 2 (-1 + 2 + 1 = 2), so the output is 2.
+
+Question 2
+Given an array nums of n integers, return an array of all the unique quadruplets
+[nums[a], nums[b], nums[c], nums[d]] such that:
+           ● 0 <= a, b, c, d < n
+           ● a, b, c, and d are distinct.
+           ● nums[a] + nums[b] + nums[c] + nums[d] == target
+
+You may return the answer in any order.
+
+Example 1:
+Input: nums = [1,0,-1,0,-2,2], target = 0
+Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+solution-
+To find all unique quadruplets in an array that sum up to a target value, you can use a combination of sorting the array and applying a modified version of the two-pointer technique. Here's a step-by-step approach to solve this problem:
+
+1. Sort the given array `nums` in ascending order.
+2. Initialize an empty list `result` to store the unique quadruplets.
+3. Iterate through the array `nums` from index 0 to n-4.
+4. Within each iteration, check if the current element is the same as the previous element. If so, skip this iteration to avoid duplicates.
+5. For the remaining elements, set a pointer `i` at index i+1 and perform a modified three-pointer technique to find the remaining three numbers.
+6. Initialize a variable `target_3sum` as `target - nums[i]`.
+7. Apply the three-pointer technique with pointers `left`, `mid`, and `right`, initialized respectively at indices i+1, n-2, and n-1.
+8. While `left` is less than `mid`:
+   - Calculate the current sum `current_sum` as `nums[i] + nums[left] + nums[mid] + nums[right]`.
+   - If `current_sum` is equal to `target`, add the unique quadruplet `[nums[i], nums[left], nums[mid], nums[right]]` to the `result` list.
+   - If `current_sum` is less than `target_3sum`, increment `left` by 1.
+   - If `current_sum` is greater than `target_3sum`, decrement `right` by 1.
+   - If `current_sum` equals `target_3sum`, check for any duplicate numbers and move `left` and `right` accordingly to avoid duplicates.
+9. Repeat steps 5-8 until `i` reaches n-4.
+10. Return the `result` list containing all unique quadruplets.
+
+Here's the Python code that implements the above algorithm:
+
+```python
+def fourSum(nums, target):
+    nums.sort()  # Sort the array in ascending order
+    n = len(nums)
+    result = []
+
+    for i in range(n - 3):
+        if i > 0 and nums[i] == nums[i - 1]:
+            continue
+
+        for j in range(i + 1, n - 2):
+            if j > i + 1 and nums[j] == nums[j - 1]:
+                continue
+
+            left = j + 1
+            right = n - 1
+            target_3sum = target - nums[i] - nums[j]
+
+            while left < right:
+                current_sum = nums[i] + nums[j] + nums[left] + nums[right]
+                if current_sum == target:
+                    result.append([nums[i], nums[j], nums[left], nums[right]])
+                    left += 1
+                    right -= 1
+                    while left < right and nums[left] == nums[left - 1]:
+                        left += 1
+                    while left < right and nums[right] == nums[right + 1]:
+                        right -= 1
+                elif current_sum < target:
+                    left += 1
+                else:
+                    right -= 1
+
+    return result
+
+
+# Test the function with the given example
+nums = [1, 0, -1, 0, -2, 2]
+target = 0
+result = fourSum(nums, target)
+print("Output:", result)
+```
+
+Output:
+```
+Output: [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]
+```
+
+The function `fourSum` takes an array `nums` and a target integer as input and returns a list of all unique quadruplets in the array that sum up to the target.
+
+In the given example, the unique quadruplets that sum up to 0 are `[-2, -1, 1, 2]`, `[-2, 0, 0, 2]`, and `[-1, 0, 0, 1]`. Therefore, the output is `[[−2,−1,1,2],[−2,0,0,2],[−1,0,0,1]]`.
+
+💡 **Question 3**
+A permutation of an array of integers is an arrangement of its members into a
+sequence or linear order.
+
+For example, for arr = [1,2,3], the following are all the permutations of arr:
+[1,2,3], [1,3,2], [2, 1, 3], [2, 3, 1], [3,1,2], [3,2,1].
+
+The next permutation of an array of integers is the next lexicographically greater
+permutation of its integer. More formally, if all the permutations of the array are
+sorted in one container according to their lexicographical order, then the next
+permutation of that array is the permutation that follows it in the sorted container.
+
+If such an arrangement is not possible, the array must be rearranged as the
+lowest possible order (i.e., sorted in ascending order).
+
+● For example, the next permutation of arr = [1,2,3] is [1,3,2].
+● Similarly, the next permutation of arr = [2,3,1] is [3,1,2].
+● While the next permutation of arr = [3,2,1] is [1,2,3] because [3,2,1] does not
+have a lexicographical larger rearrangement.
+
+Given an array of integers nums, find the next permutation of nums.
+The replacement must be in place and use only constant extra memory.
+
+**Example 1:**
+Input: nums = [1,2,3]
+Output: [1,3,2]
+solution-
+To find the next permutation of an array of integers, you can follow these steps:
+
+1. Start from the right end of the array and find the first pair of consecutive elements where the left element is smaller than the right element. Let's call the index of the left element `i`.
+2. If no such pair is found, it means the array is in descending order, and it is the last permutation. In this case, reverse the entire array to get the lowest possible order and return.
+3. If a pair is found at index `i`, swap the left element with the smallest element to its right that is larger than the left element. Let's call the index of this element `j`.
+4. Reverse the elements to the right of index `i` (including `i`) to get the next lexicographically greater permutation.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def nextPermutation(nums):
+    n = len(nums)
+    i = n - 2
+
+    # Find the first pair where the left element is smaller than the right element
+    while i >= 0 and nums[i] >= nums[i + 1]:
+        i -= 1
+
+    if i >= 0:
+        # Find the smallest element to the right of nums[i] that is larger than nums[i]
+        j = n - 1
+        while j > i and nums[j] <= nums[i]:
+            j -= 1
+
+        # Swap nums[i] and nums[j]
+        nums[i], nums[j] = nums[j], nums[i]
+
+    # Reverse the elements to the right of index i
+    left = i + 1
+    right = n - 1
+    while left < right:
+        nums[left], nums[right] = nums[right], nums[left]
+        left += 1
+        right -= 1
+
+
+# Test the function with the given example
+nums = [1, 2, 3]
+nextPermutation(nums)
+print("Output:", nums)
+```
+
+Output:
+```
+Output: [1, 3, 2]
+```
+
+The function `nextPermutation` takes an array `nums` as input and modifies it in place to store the next lexicographically greater permutation.
+
+In the given example, the next permutation of `[1, 2, 3]` is `[1, 3, 2]`. Therefore, the output is `[1, 3, 2]`.
+Question 4
+Given a sorted array of distinct integers and a target value, return the index if the
+target is found. If not, return the index where it would be if it were inserted in
+order.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+Example 1:
+Input: nums = [1,3,5,6], target = 5
+Output: 2
+solution-
+To find the index where a target value should be inserted in a sorted array of distinct integers, you can use the binary search algorithm. Here's a step-by-step approach to solve this problem:
+
+1. Initialize two pointers, `left` and `right`, to the start and end of the array, respectively.
+2. While `left` is less than or equal to `right`, calculate the middle index as `mid` using the formula: `mid = left + (right - left) // 2`.
+3. If the value at `mid` is equal to the target, return `mid` as the index.
+4. If the value at `mid` is less than the target, update `left` to `mid + 1` to search the right half of the array.
+5. If the value at `mid` is greater than the target, update `right` to `mid - 1` to search the left half of the array.
+6. Repeat steps 2-5 until `left` is greater than `right`.
+7. If the target is not found, return the value of `left` as the index where it would be inserted in order.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def searchInsert(nums, target):
+    left = 0
+    right = len(nums) - 1
+
+    while left <= right:
+        mid = left + (right - left) // 2
+
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return left
+
+
+# Test the function with the given example
+nums = [1, 3, 5, 6]
+target = 5
+result = searchInsert(nums, target)
+print("Output:", result)
+```
+
+Output:
+```
+Output: 2
+```
+
+The function `searchInsert` takes a sorted array `nums` and a target integer as input and returns the index where the target is found. If the target is not found, it returns the index where it would be inserted in order.
+
+In the given example, the target value 5 is found at index 2. Therefore, the output is 2.
+<aside>
+💡 **Question 5**
+You are given a large integer represented as an integer array digits, where each
+digits[i] is the ith digit of the integer. The digits are ordered from most significant
+to least significant in left-to-right order. The large integer does not contain any
+leading 0's.
+
+Increment the large integer by one and return the resulting array of digits.
+
+**Example 1:**
+Input: digits = [1,2,3]
+Output: [1,2,4]
+
+**Explanation:** The array represents the integer 123.
+Incrementing by one gives 123 + 1 = 124.
+Thus, the result should be [1,2,4]
+
+</aside>
+solution-
+To increment a large integer represented as an array of digits by one, you can follow these steps:
+
+1. Start from the right end of the digits array and initialize a carry variable as 1.
+2. Iterate through the digits from right to left.
+3. Add the carry value to the current digit.
+4. If the sum of the current digit and the carry is less than 10, update the current digit with the sum and set the carry to 0.
+5. If the sum of the current digit and the carry is equal to 10, update the current digit to 0 and set the carry to 1.
+6. After iterating through all the digits, if the carry is still 1, insert a new digit with the value 1 at the beginning of the array.
+7. Return the updated array of digits.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def plusOne(digits):
+    carry = 1
+    n = len(digits)
+
+    for i in range(n - 1, -1, -1):
+        sum = digits[i] + carry
+        if sum < 10:
+            digits[i] = sum
+            carry = 0
+        else:
+            digits[i] = 0
+            carry = 1
+
+    if carry == 1:
+        digits.insert(0, 1)
+
+    return digits
+
+
+# Test the function with the given example
+digits = [1, 2, 3]
+result = plusOne(digits)
+print("Output:", result)
+```
+
+Output:
+```
+Output: [1, 2, 4]
+```
+
+The function `plusOne` takes an array `digits` representing a large integer and increments it by one, returning the resulting array of digits.
+
+In the given example, the input `[1, 2, 3]` represents the integer 123. Incrementing it by one gives 124, which corresponds to the array `[1, 2, 4]`. Therefore, the output is `[1, 2, 4]`.
+Question 6
+Given a non-empty array of integers nums, every element appears twice except
+for one. Find that single one.
+
+You must implement a solution with a linear runtime complexity and use only
+constant extra space.
+
+Example 1:
+Input: nums = [2,2,1]
+Output: 1
+solution-
+To find the single element in an array where every other element appears twice, you can use the XOR operation. The XOR of two same numbers is 0, so if you XOR all the elements in the array, the result will be the single element.
+
+Here's the Python code that implements this approach:
+
+```python
+def singleNumber(nums):
+    result = 0
+    for num in nums:
+        result ^= num
+    return result
+
+
+# Test the function with the given example
+nums = [2, 2, 1]
+result = singleNumber(nums)
+print("Output:", result)
+```
+
+Output:
+```
+Output: 1
+```
+
+The function `singleNumber` takes an array `nums` as input and returns the single element that appears only once.
+
+In the given example, the array `[2, 2, 1]` has one element (`1`) that appears only once, while the other elements (`2`) appear twice. Therefore, the output is `1`.
+Question 7
+You are given an inclusive range [lower, upper] and a sorted unique integer array
+nums, where all elements are within the inclusive range.
+
+A number x is considered missing if x is in the range [lower, upper] and x is not in
+nums.
+
+Return the shortest sorted list of ranges that exactly covers all the missing
+numbers. That is, no element of nums is included in any of the ranges, and each
+missing number is covered by one of the ranges.
+
+Example 1:
+Input: nums = [0,1,3,50,75], lower = 0, upper = 99
+Output: [[2,2],[4,49],[51,74],[76,99]]
+
+Explanation: The ranges are:
+[2,2]
+[4,49]
+[51,74]
+[76,99]
+solution-
+To find the shortest sorted list of ranges that covers all the missing numbers within a given range [lower, upper] and a sorted unique integer array, you can iterate through the numbers and construct the ranges. 
+
+Here's a step-by-step approach to solve this problem:
+
+1. Initialize an empty list `result` to store the ranges.
+2. Initialize a variable `start` with the value of `lower`.
+3. Iterate through the numbers in the array `nums`.
+4. If the current number is equal to `start`, increment `start` by 1 and continue to the next iteration.
+5. If the current number is greater than `start`, append a range from `start` to `current number - 1` to the `result` list.
+6. Update `start` to `current number + 1`.
+7. After iterating through all the numbers, if `start` is less than or equal to `upper`, append a range from `start` to `upper` to the `result` list.
+8. Return the `result` list.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def findMissingRanges(nums, lower, upper):
+    result = []
+    start = lower
+
+    for num in nums:
+        if num == start:
+            start += 1
+        elif num > start:
+            result.append([start, num - 1])
+            start = num + 1
+
+    if start <= upper:
+        result.append([start, upper])
+
+    return result
+
+
+# Test the function with the given example
+nums = [0, 1, 3, 50, 75]
+lower = 0
+upper = 99
+result = findMissingRanges(nums, lower, upper)
+print("Output:", result)
+```
+
+Output:
+```
+Output: [[2, 2], [4, 49], [51, 74], [76, 99]]
+```
+
+The function `findMissingRanges` takes an array `nums`, lower bound `lower`, and upper bound `upper` as input and returns the shortest sorted list of ranges that covers all the missing numbers within the range.
+
+In the given example, the missing numbers within the range [0, 99] are 2, 4 to 49, 51 to 74, and 76 to 99. Therefore, the output is `[[2, 2], [4, 49], [51, 74], [76, 99]]`.
+<aside>
+💡 **Question 8**
+Given an array of meeting time intervals where intervals[i] = [starti, endi],
+determine if a person could attend all meetings.
+
+**Example 1:**
+Input: intervals = [[0,30],[5,10],[15,20]]
+Output: false
+
+</aside>
+solution-
+To determine if a person could attend all meetings given an array of meeting time intervals, you can sort the intervals based on the start time and check if any two intervals overlap. If there are no overlapping intervals, it means the person can attend all meetings.
+
+Here's a step-by-step approach to solve this problem:
+
+1. Sort the array of meeting intervals based on the start time.
+2. Iterate through the sorted intervals starting from the second interval.
+3. For each interval, check if the start time is less than or equal to the end time of the previous interval. If it is, there is an overlap, and the person cannot attend all meetings.
+4. If no overlaps are found, the person can attend all meetings, so return `True`.
+5. If an overlap is found, return `False`.
+
+Here's the Python code that implements this algorithm:
+
+```python
+def canAttendMeetings(intervals):
+    intervals.sort(key=lambda x: x[0])  # Sort the intervals based on the start time
+
+    for i in range(1, len(intervals)):
+        if intervals[i][0] < intervals[i - 1][1]:
+            return False
+
+    return True
+
+
+# Test the function with the given example
+intervals = [[0, 30], [5, 10], [15, 20]]
+result = canAttendMeetings(intervals)
+print("Output:", result)
+```
+
+Output:
+```
+Output: False
+```
+
+The function `canAttendMeetings` takes an array `intervals` of meeting time intervals as input and returns `True` if a person could attend all meetings, and `False` otherwise.
+
+In the given example, the person cannot attend all meetings because the intervals [0, 30] and [5, 10] overlap. Therefore, the output is `False`.
