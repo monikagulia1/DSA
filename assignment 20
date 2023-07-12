@@ -1,0 +1,221 @@
+💡 Question-1
+Given a binary tree, your task is to find subtree with maximum sum in tree.
+
+Examples:
+
+Input1 :       
+
+       1
+
+     /   \
+
+   2      3
+
+  / \    / \
+
+4   5  6   7
+
+Output1 : 28
+
+As all the tree elements are positive, the largest subtree sum is equal to sum of all tree elements.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def maxSubtreeSum(root):
+    max_sum = float('-inf')
+
+    def subtreeSum(node):
+        nonlocal max_sum
+
+        if node is None:
+            return 0
+        
+        left_sum = subtreeSum(node.left)
+        right_sum = subtreeSum(node.right)
+
+        max_sum = max(max_sum, node.val + left_sum + right_sum)
+
+        return node.val + left_sum + right_sum
+
+    subtreeSum(root)
+
+    return max_sum
+
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+root.right.left = TreeNode(6)
+root.right.right = TreeNode(7)
+
+result = maxSubtreeSum(root)
+print(result)
+28
+💡 Question-2
+Construct the BST (Binary Search Tree) from its given level order traversal.
+
+Example:
+
+Input: arr[] = {7, 4, 12, 3, 6, 8, 1, 5, 10}
+
+Output: BST:
+
+            7
+
+         /    \
+
+       4     12
+
+     /  \     /
+
+    3   6  8
+
+   /    /     \
+
+ 1    5      10
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def constructBST(level_order):
+    if not level_order:
+        return None
+
+    root = TreeNode(level_order[0])
+    queue = [root]
+    index = 1
+
+    while index < len(level_order):
+        curr_node = queue.pop(0)
+        left_val = level_order[index]
+        right_val = level_order[index + 1] if index + 1 < len(level_order) else None
+
+        if left_val is not None:
+            left_node = TreeNode(left_val)
+            curr_node.left = left_node
+            queue.append(left_node)
+
+        if right_val is not None:
+            right_node = TreeNode(right_val)
+            curr_node.right = right_node
+            queue.append(right_node)
+
+        index += 2
+
+    return root
+
+level_order = [7, 4, 12, 3, 6, 8, 1, 5, 10]
+
+root = constructBST(level_order)
+
+def printBST(root):
+    if root is None:
+        return
+
+    print(root.val)
+    printBST(root.left)
+    printBST(root.right)
+
+printBST(root)
+7
+4
+3
+5
+10
+6
+12
+8
+1
+💡 Question-3
+Given an array of size n. The problem is to check whether the given array can represent the level order traversal of a Binary Search Tree or not.
+
+Examples:
+
+Input1 : arr[] = {7, 4, 12, 3, 6, 8, 1, 5, 10}
+
+Output1 : Yes
+
+For the given arr[], the Binary Search Tree is:
+
+            7
+
+         /    \
+
+       4     12
+
+     /  \     /
+
+    3   6  8
+
+   /    /     \
+
+ 1    5      10
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+
+def constructBST(arr):
+    n = len(arr)
+    if n == 0:
+        return None
+
+    root = TreeNode(arr[0])
+    i = 1
+
+    while i < n:
+        node = root
+
+        while True:
+            if arr[i] < node.val:
+                if node.left is None:
+                    node.left = TreeNode(arr[i])
+                    break
+                else:
+                    node = node.left
+            elif arr[i] > node.val:
+                if node.right is None:
+                    node.right = TreeNode(arr[i])
+                    break
+                else:
+                    node = node.right
+            else:
+                return None
+
+        i += 1
+
+    return root
+
+
+def isLevelOrderBST(arr):
+    root = constructBST(arr)
+
+    if root is None:
+        return False
+
+    def inorderTraversal(node, result):
+        if node is not None:
+            inorderTraversal(node.left, result)
+            result.append(node.val)
+            inorderTraversal(node.right, result)
+
+    inorder = []
+    inorderTraversal(root, inorder)
+
+    return inorder == sorted(arr)
+
+
+
+arr = [7, 4, 12, 3, 6, 8, 1, 5, 10]
+
+result = isLevelOrderBST(arr)
+print(result)
+True
