@@ -1,0 +1,566 @@
+💡 **Question 1**
+Given two linked list of the same size, the task is to create a new linked list using those linked lists. The condition is that the greater node among both linked list will be added to the new linked list.
+
+**Examples:**
+Input: list1 = 5->2->3->8
+list2 = 1->7->4->5
+Output: New list = 5->7->4->8
+
+Input:list1 = 2->8->9->3
+list2 = 5->3->6->4
+Output: New list = 5->8->9->4
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+
+
+def append_node(head, newData):
+    newNode = Node(newData)
+
+    if head is None:
+        head = newNode
+    else:
+        temp = head
+        while temp.next is not None:
+            temp = temp.next
+        temp.next = newNode
+
+    return head
+
+
+def create_new_linked_list(list1, list2):
+    new_list = None
+    temp1 = list1
+    temp2 = list2
+
+    while temp1 is not None and temp2 is not None:
+        if temp1.data >= temp2.data:
+            new_list = append_node(new_list, temp1.data)
+        else:
+            new_list = append_node(new_list, temp2.data)
+
+        temp1 = temp1.next
+        temp2 = temp2.next
+
+    return new_list
+
+
+
+if __name__ == '__main__':
+   
+    list1 = Node(5)
+    list1.next = Node(2)
+    list1.next.next = Node(3)
+    list1.next.next.next = Node(8)
+
+   
+    list2 = Node(1)
+    list2.next = Node(7)
+    list2.next.next = Node(4)
+    list2.next.next.next = Node(5)
+
+    new_list = create_new_linked_list(list1, list2)
+
+  
+    temp = new_list
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+5 7 4 8 
+💡 **Question 2**
+Write a function that takes a list sorted in non-decreasing order and deletes any duplicate nodes from the list. The list should only be traversed once.
+
+For example if the linked list is 11->11->11->21->43->43->60 then removeDuplicates() should convert the list to 11->21->43->60.
+
+Example 1:
+
+Input:
+LinkedList: 
+11->11->11->21->43->43->60
+Output:
+11->21->43->60
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+
+
+def remove_duplicates(head):
+    if head is None or head.next is None:
+        return head
+
+    current = head
+    while current.next is not None:
+        if current.data == current.next.data:
+            duplicate = current.next
+            current.next = current.next.next
+            del duplicate
+        else:
+            current = current.next
+
+    return head
+
+
+
+if __name__ == '__main__':
+    head = Node(11)
+    head.next = Node(11)
+    head.next.next = Node(11)
+    head.next.next.next = Node(21)
+    head.next.next.next.next = Node(43)
+    head.next.next.next.next.next = Node(43)
+    head.next.next.next.next.next.next = Node(60)
+
+   
+    head = remove_duplicates(head)
+
+
+    temp = head
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+11 21 43 60 
+💡 **Question 3**
+Given a linked list of size N. The task is to reverse every k nodes (where k is an input to the function) in the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should be considered as a group and must be reversed (See Example 2 for clarification).
+
+Example 1:
+
+Input:
+LinkedList: 1->2->2->4->5->6->7->8
+K = 4
+Output:4 2 2 1 8 7 6 5
+Explanation:
+The first 4 elements 1,2,2,4 are reversed first
+and then the next 4 elements 5,6,7,8. Hence, the
+resultant linked list is 4->2->2->1->8->7->6->5.
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+
+
+def reverse_k_nodes(head, k):
+    if head is None or k <= 1:
+        return head
+
+    prev, curr, next_node = None, head, None
+    count = 0
+
+    while curr is not None and count < k:
+        next_node = curr.next
+        curr.next = prev
+        prev = curr
+        curr = next_node
+        count += 1
+
+    if next_node is not None:
+        head.next = reverse_k_nodes(next_node, k)
+
+    return prev
+
+
+
+def print_linked_list(head):
+    temp = head
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+    print()
+
+
+if __name__ == '__main__':
+   
+    head = Node(1)
+    head.next = Node(2)
+    head.next.next = Node(2)
+    head.next.next.next = Node(4)
+    head.next.next.next.next = Node(5)
+    head.next.next.next.next.next = Node(6)
+    head.next.next.next.next.next.next = Node(7)
+    head.next.next.next.next.next.next.next = Node(8)
+
+    
+    k = 4
+    head = reverse_k_nodes(head, k)
+
+
+    print_linked_list(head)
+4 2 2 1 8 7 6 5 
+💡 **Question 4**
+Given a linked list, write a function to reverse every alternate k nodes (where k is an input to the function) in an efficient way. Give the complexity of your algorithm.
+
+Example:
+
+Inputs:   1->2->3->4->5->6->7->8->9->NULL and k = 3
+Output:   3->2->1->4->5->6->9->8->7->NULL.
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+
+
+def reverse_alternate_k_nodes(head, k):
+    if head is None or k <= 1:
+        return head
+
+    curr, prev, next_node = head, None, None
+    count = 0
+
+
+    while curr is not None and count < k:
+        next_node = curr.next
+        curr.next = prev
+        prev = curr
+        curr = next_node
+        count += 1
+
+    head.next = curr
+
+   
+    count = 0
+    while curr is not None and count < k - 1:
+        curr = curr.next
+        count += 1
+
+    if curr is not None:
+        curr.next = reverse_alternate_k_nodes(curr.next, k)
+
+    return prev
+
+
+
+def print_linked_list(head):
+    temp = head
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+    print()
+
+
+
+if __name__ == '__main__':
+
+    head = Node(1)
+    head.next = Node(2)
+    head.next.next = Node(3)
+    head.next.next.next = Node(4)
+    head.next.next.next.next = Node(5)
+    head.next.next.next.next.next = Node(6)
+    head.next.next.next.next.next.next = Node(7)
+    head.next.next.next.next.next.next.next = Node(8)
+    head.next.next.next.next.next.next.next.next = Node(9)
+
+ 
+    k = 3
+    head = reverse_alternate_k_nodes(head, k)
+
+
+    print_linked_list(head)
+3 2 1 4 5 6 9 8 7 
+💡 **Question 5**
+Given a linked list and a key to be deleted. Delete last occurrence of key from linked. The list may have duplicates.
+
+Examples:
+
+Input:   1->2->3->5->2->10, key = 2
+Output:  1->2->3->5->10
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+
+
+def delete_last_occurrence(head, key):
+    if head is None:
+        return None
+
+    last_occurrence = None
+    prev, curr = None, head
+
+    while curr is not None:
+        if curr.data == key:
+            last_occurrence = curr
+        curr = curr.next
+
+
+    if last_occurrence is None:
+        return head
+
+ 
+    if last_occurrence == head:
+        head = head.next
+        last_occurrence = None
+        return head
+
+  
+    prev, curr = None, head
+    while curr.next is not None:
+        if curr.next == last_occurrence:
+            prev = curr
+        curr = curr.next
+
+
+    prev.next = last_occurrence.next
+    last_occurrence = None
+
+    return head
+
+
+
+def print_linked_list(head):
+    temp = head
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+    print()
+
+
+
+if __name__ == '__main__':
+
+    head = Node(1)
+    head.next = Node(2)
+    head.next.next = Node(3)
+    head.next.next.next = Node(4)
+    head.next.next.next.next = Node(3)
+    head.next.next.next.next.next = Node(5)
+
+   
+    print("Original Linked List:")
+    print_linked_list(head)
+
+
+    key = 3
+    head = delete_last_occurrence(head, key)
+
+   
+    print("Updated Linked List:")
+    print_linked_list(head)
+Original Linked List:
+1 2 3 4 3 5 
+Updated Linked List:
+1 2 3 4 5 
+💡 **Question 6**
+Given two sorted linked lists consisting of N and M nodes respectively. The task is to merge both of the lists (in place) and return the head of the merged list.
+
+Examples:
+
+Input: a: 5->10->15, b: 2->3->20
+
+Output: 2->3->5->10->15->20
+
+Input: a: 1->1, b: 2->4
+
+Output: 1->1->2->4
+
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+
+
+def merge_sorted_lists(head1, head2):
+    
+    dummy = Node()
+    tail = dummy
+
+    while head1 is not None and head2 is not None:
+        if head1.data <= head2.data:
+            tail.next = head1
+            head1 = head1.next
+        else:
+            tail.next = head2
+            head2 = head2.next
+        tail = tail.next
+
+  
+    if head1 is not None:
+        tail.next = head1
+    elif head2 is not None:
+        tail.next = head2
+
+    
+    return dummy.next
+
+
+
+def print_linked_list(head):
+    temp = head
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+    print()
+
+
+
+if __name__ == '__main__':
+
+    head1 = Node(5)
+    head1.next = Node(10)
+    head1.next.next = Node(15)
+
+
+    head2 = Node(2)
+    head2.next = Node(3)
+    head2.next.next = Node(20)
+
+ 
+    merged_head = merge_sorted_lists(head1, head2)
+
+
+    print("Merged Linked List:")
+    print_linked_list(merged_head)
+Merged Linked List:
+2 3 5 10 15 20 
+💡 **Question 7**
+Given a Doubly Linked List, the task is to reverse the given Doubly Linked List.
+
+Example:
+
+Original Linked list 10 8 4 2
+Reversed Linked list 2 4 8 10
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+        self.prev = None
+
+
+def reverse_doubly_linked_list(head):
+    if head is None or head.next is None:
+        return head
+
+    current = head
+    prev = None
+
+    while current is not None:
+        next_node = current.next
+        current.next = prev
+        current.prev = next_node
+        prev = current
+        current = next_node
+
+    head = prev
+    return head
+
+
+
+def print_doubly_linked_list(head):
+    temp = head
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+    print()
+
+
+
+if __name__ == '__main__':
+   
+    head = Node(10)
+    head.next = Node(8)
+    head.next.prev = head
+    head.next.next = Node(4)
+    head.next.next.prev = head.next
+    head.next.next.next = Node(2)
+    head.next.next.next.prev = head.next.next
+
+
+    print("Original Doubly Linked List:")
+    print_doubly_linked_list(head)
+
+    
+    head = reverse_doubly_linked_list(head)
+
+
+    print("Reversed Doubly Linked List:")
+    print_doubly_linked_list(head)
+Original Doubly Linked List:
+10 8 4 2 
+Reversed Doubly Linked List:
+2 4 8 10 
+💡 **Question 8**
+Given a doubly linked list and a position. The task is to delete a node from given position in a doubly linked list.
+
+Example 1:
+
+Input:
+LinkedList = 1 <--> 3 <--> 4
+x = 3
+Output:1 3
+Explanation:After deleting the node at
+position 3 (position starts from 1),
+the linked list will be now as 1->3.
+
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+        self.prev = None
+
+
+def delete_node_at_position(head, position):
+    if head is None:
+        return None
+
+    if position == 1:
+        new_head = head.next
+        if new_head is not None:
+            new_head.prev = None
+        return new_head
+
+    current = head
+    prev = None
+    count = 1
+
+    while current is not None and count < position:
+        prev = current
+        current = current.next
+        count += 1
+
+    if current is None:
+        return head
+
+    prev.next = current.next
+    if current.next is not None:
+        current.next.prev = prev
+    current.next = None
+    current.prev = None
+
+    return head
+
+
+def print_doubly_linked_list(head):
+    temp = head
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+    print()
+
+
+
+if __name__ == '__main__':
+   
+    head = Node(1)
+    head.next = Node(5)
+    head.next.prev = head
+    head.next.next = Node(2)
+    head.next.next.prev = head.next
+    head.next.next.next = Node(9)
+    head.next.next.prev = head.next.next
+
+    
+    print("Original Doubly Linked List:")
+    print_doubly_linked_list(head)
+
+ 
+    position = 1
+    head = delete_node_at_position(head, position)
+
+
+    print("Updated Doubly Linked List:")
+    print_doubly_linked_list(head)
+Original Doubly Linked List:
+1 5 2 9 
+Updated Doubly Linked List:
+5 2 9 
