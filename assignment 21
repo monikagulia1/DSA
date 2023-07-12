@@ -1,0 +1,379 @@
+💡 Question-1
+You are given a binary tree. The binary tree is represented using the TreeNode class. Each TreeNode has an integer value and left and right children, represented using the TreeNode class itself. Convert this binary tree into a binary search tree.
+
+Input:
+
+        10
+
+       /   \
+
+     2      7
+
+   /   \
+
+ 8      4
+
+Output:
+
+        8
+
+      /   \
+
+    4     10
+
+  /   \
+
+2      7
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+
+def inorderTraversal(node, result):
+    if node is not None:
+        inorderTraversal(node.left, result)
+        result.append(node)
+        inorderTraversal(node.right, result)
+
+
+def convertToBST(root):
+    if root is None:
+        return None
+
+    nodes = []
+    inorderTraversal(root, nodes)
+    sorted_values = sorted([node.val for node in nodes])
+
+    index = 0
+
+    def inorderTraversalAndUpdate(node):
+        nonlocal index
+        if node is not None:
+            inorderTraversalAndUpdate(node.left)
+            node.val = sorted_values[index]
+            index += 1
+            inorderTraversalAndUpdate(node.right)
+
+    inorderTraversalAndUpdate(root)
+    return root
+
+root = TreeNode(10)
+root.left = TreeNode(2)
+root.right = TreeNode(7)
+root.left.left = TreeNode(8)
+root.left.right = TreeNode(4)
+
+result = convertToBST(root)
+
+def inorderTraversal(node):
+    if node is not None:
+        inorderTraversal(node.left)
+        print(node.val, end=" ")
+        inorderTraversal(node.right)
+
+inorderTraversal(result)
+2 4 7 8 10 
+💡 Question-2:
+Given a Binary Search Tree with all unique values and two keys. Find the distance between two nodes in BST. The given keys always exist in BST.
+
+Example:
+
+Consider the following BST:
+
+
+**Input-1:**
+
+n = 9
+
+values = [8, 3, 1, 6, 4, 7, 10, 14,13]
+
+node-1 = 6
+
+node-2 = 14
+
+**Output-1:**
+
+The distance between the two keys = 4
+
+**Input-2:**
+
+n = 9
+
+values = [8, 3, 1, 6, 4, 7, 10, 14,13]
+
+node-1 = 3
+
+node-2 = 4
+
+**Output-2:**
+
+The distance between the two keys = 2
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+
+def constructBST(values):
+    if not values:
+        return None
+
+    root = TreeNode(values[0])
+    for val in values[1:]:
+        insertNode(root, val)
+
+    return root
+
+
+def insertNode(root, val):
+    if root is None:
+        return TreeNode(val)
+
+    if val < root.val:
+        root.left = insertNode(root.left, val)
+    else:
+        root.right = insertNode(root.right, val)
+
+    return root
+
+
+def findLCA(root, node1, node2):
+    if root is None:
+        return None
+
+    if root.val > node1 and root.val > node2:
+        return findLCA(root.left, node1, node2)
+    elif root.val < node1 and root.val < node2:
+        return findLCA(root.right, node1, node2)
+    else:
+        return root
+
+
+def findDistance(root, node, distance):
+    if root is None:
+        return 0
+
+    if root.val == node:
+        return distance
+
+    if root.val > node:
+        return findDistance(root.left, node, distance + 1)
+    else:
+        return findDistance(root.right, node, distance + 1)
+
+
+def distanceBetweenNodes(values, node1, node2):
+    root = constructBST(values)
+    lca = findLCA(root, node1, node2)
+
+    distance1 = findDistance(lca, node1, 0)
+    distance2 = findDistance(lca, node2, 0)
+
+    return distance1 + distance2
+
+
+values = [8, 3, 1, 6, 4, 7, 10, 14, 13]
+node1 = 6
+node2 = 14
+print("The distance between the two keys:", distanceBetweenNodes(values, node1, node2))
+
+node1 = 3
+node2 = 4
+print("The distance between the two keys:", distanceBetweenNodes(values, node1, node2))
+The distance between the two keys: 4
+The distance between the two keys: 2
+💡 Question-3:
+Write a program to convert a binary tree to a doubly linked list.
+
+Input:
+
+        10
+
+       /   \
+
+     5     20
+
+           /   \
+
+        30     35
+
+Output:
+
+5 10 30 20 35
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+
+class DoublyLinkedListNode:
+    def __init__(self, val):
+        self.val = val
+        self.prev = None
+        self.next = None
+
+
+def convertToDoublyLinkedList(root):
+    if root is None:
+        return None
+
+    # Initialize the previous pointer as None
+    prev = None
+
+    # Convert the left subtree to a doubly linked list
+    head = convertToDoublyLinkedList(root.left)
+
+    # Create a doubly linked list node for the current root
+    current = DoublyLinkedListNode(root.val)
+
+    # If the left subtree exists, update the links
+    if head is not None:
+        current.prev = head
+        head.next = current
+
+    # If there is a previous node, update the links
+    if prev is not None:
+        prev.next = current
+        current.prev = prev
+
+    # Update the previous node to the current node
+    prev = current
+
+    # Convert the right subtree to a doubly linked list
+    tail = convertToDoublyLinkedList(root.right)
+
+    # If the right subtree exists, update the links
+    if tail is not None:
+        tail.prev = current
+        current.next = tail
+
+    # Find the head of the doubly linked list
+    while head is not None and head.prev is not None:
+        head = head.prev
+
+    return head
+
+
+# Test case
+root = TreeNode(10)
+root.left = TreeNode(5)
+root.right = TreeNode(20)
+root.right.left = TreeNode(30)
+root.right.right = TreeNode(35)
+
+# Convert binary tree to doubly linked list
+head = convertToDoublyLinkedList(root)
+
+# Print the doubly linked list
+current = head
+while current is not None:
+    print(current.val, end=" ")
+    current = current.next
+💡 Question-4:
+Write a program to connect nodes at the same level.
+
+Input:
+
+        1
+
+      /   \
+
+    2      3
+
+  /   \   /   \
+
+4     5 6    7
+
+Output:
+
+1 → -1
+
+2 → 3
+
+3 → -1
+
+4 → 5
+
+5 → 6
+
+6 → 7
+
+7 → -1
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+        self.next = None
+
+
+def connectNodesAtSameLevel(root):
+    if root is None:
+        return root
+
+    # Create a queue for level order traversal
+    queue = []
+    queue.append(root)
+
+    # Set the next pointer of the root node to None
+    root.next = None
+
+    # Perform level order traversal
+    while queue:
+        # Get the size of the current level
+        size = len(queue)
+
+        # Process all nodes at the current level
+        for i in range(size):
+            # Remove the front node from the queue
+            node = queue.pop(0)
+
+            # Set the next pointer of the current node
+            if i < size - 1:
+                node.next = queue[0]
+            else:
+                node.next = None
+
+            # Add the left and right children to the queue
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+
+    return root
+
+
+# Test case
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+root.right.left = TreeNode(6)
+root.right.right = TreeNode(7)
+
+# Connect nodes at the same level
+root = connectNodesAtSameLevel(root)
+
+# Print the next pointers
+current = root
+while current:
+    temp = current
+    while temp:
+        if temp.next:
+            print(temp.val, '->', temp.next.val)
+        else:
+            print(temp.val, '-> -1')
+        temp = temp.next
+    current = current.left
+1 -> -1
+2 -> 3
+3 -> -1
+4 -> 5
+5 -> 6
+6 -> 7
+7 -> -1
